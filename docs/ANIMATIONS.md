@@ -118,10 +118,22 @@ A fixed, full-viewport SVG sits behind all content (`-z-10`,
 
 - Color/opacity via CSS vars: `--path-stroke` / `--path-opacity`
   (light: `#1D9E75` @ 12%, dark: `#5DCAA5` @ 15%, mobile reduced to 8%).
-- **Draw-on-scroll:** on mount the path length is read with `getTotalLength()`
-  and set as both `stroke-dasharray` and `stroke-dashoffset`. On `scroll`
-  (throttled with `requestAnimationFrame`), the offset is updated to
-  `length * (1 - progress)`, where `progress = scrollY / (scrollHeight - clientHeight)`.
+- **Draw-on-scroll (lerp):** on mount the path length is read with
+  `getTotalLength()` and set as `stroke-dasharray`. The scroll event only updates
+  a **target** offset (`length * (1 - progress)`, where
+  `progress = scrollY / (scrollHeight - clientHeight)`). A continuous
+  `requestAnimationFrame` loop interpolates the **current** offset toward the
+  target each frame:
+
+  ```js
+  currentOffset += (targetOffset - currentOffset) * 0.08; // lerp factor
+  ```
+
+  This makes the drawing lag slightly behind the scroll for a fluid, organic
+  feel instead of snapping to position. Tune the **lerp factor** between `0.05`
+  (very lazy) and `0.12` (more responsive); it snaps to the target once within
+  0.5px so it settles cleanly. Decoupling from the scroll event also avoids the
+  jerkiness of doing layout work on every scroll tick.
 
 To redraw the shape, edit the `d` attribute of the `<path>`.
 
@@ -137,8 +149,44 @@ A green dot pulses infinitely. Keyframe `pulse` animates `scale` (1 → 1.6) and
 
 ---
 
-## 8. Smooth scroll
+## 8. Smooth scroll (JS momentum)
 
-`scroll-behavior: smooth` and `scroll-padding-top: 70px` are set globally in
-`app/globals.css`, plus `scroll-mt-[70px]` on sections, so anchored navigation
-lands below the fixed navbar.
+**Where:** `lib/smoothScroll.ts` + `components/SmoothScroll.tsx`.
+
+CSS `scroll-behavior: smooth` is **not** used (abrupt, browser-dependent, no
+easing control). Instead, `components/SmoothScroll.tsx` mounts a single delegated
+click listener that intercepts in-page anchor clicks (`<a href="#...">`) and
+animates the scroll in JS:
+
+- **Easing:** `easeInOutCubic` — slow start, fast middle, gentle settle.
+- **Duration:** distance-based, `Math.min(Math.max(|distance| / 3, 500), 1200)`
+  ms — short jumps feel snappy, long jumps cinematic.
+- **Offset:** target is `element top − 70px` (`SCROLL_OFFSET`) so content clears
+  the fixed navbar; the URL hash is kept in sync via `history.pushState`.
+- **Reduced motion:** jumps straight to the target.
+
+`scroll-padding-top: 70px` remains in CSS as a no-JS fallback for native anchor
+jumps.
+
+---
+
+## 9. Hero page-entry animation
+
+**Where:** `components/Hero.tsx` + `.hero-enter` keyframes in `app/globals.css`.
+
+On first load the hero elements fade + slide up in a staggered sequence. Built
+with CSS `@keyframes heroEnter` (not JS) so it runs without hydration and
+degrades gracefully.
+
+- From: `opacity: 0; transform: translateY(16px)` → to `opacity: 1; translateY(0)`.
+- Duration: **0.6s**, easing **`cubic-bezier(0.22, 1, 0.36, 1)`**, `forwards`.
+- Stagger (`animation-delay` per element): **name 0ms · tagline 150ms · badge
+  300ms · CTAs 450ms**.
+
+---
+
+## 10. Navbar active link transition
+
+Navbar links use `transition-colors duration-300 ease-out` so the active section
+highlight fades softly (≈`color 0.3s ease`) rather than swapping instantly. See
+section 4 for how the active section is detected.

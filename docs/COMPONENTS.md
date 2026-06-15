@@ -144,8 +144,15 @@ Counts from 0 to `value` once visible, with `easeOutCubic`.
 
 ### `ScrollPath` — Client
 
-Fixed background SVG path drawn via `stroke-dashoffset` on scroll. No props.
-Rendered once in `app/layout.tsx`.
+Fixed background SVG path drawn via `stroke-dashoffset`, lerped toward the scroll
+target each frame. No props. Rendered once in `app/layout.tsx`.
+
+### `SmoothScroll` — Client
+
+Headless (renders `null`). Mounts one delegated listener that turns in-page
+anchor clicks into a JS momentum scroll (`lib/smoothScroll.ts`, `easeInOutCubic`,
+distance-based duration, 70px navbar offset). No props. Rendered once in
+`app/layout.tsx`.
 
 ---
 

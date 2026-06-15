@@ -100,8 +100,11 @@ export default function Hero() {
 
       <div className="container-page relative">
         <div className="max-w-3xl">
-          {/* Availability badge */}
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface-secondary px-4 py-1.5 text-sm font-medium text-content">
+          {/* Availability badge — staggered page-entry (delay 300ms) */}
+          <span
+            className="hero-enter mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface-secondary px-4 py-1.5 text-sm font-medium text-content"
+            style={{ animationDelay: "300ms" }}
+          >
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-accent" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
@@ -109,15 +112,24 @@ export default function Hero() {
             {SITE.availability}
           </span>
 
-          <h1 className="font-display text-h1-mobile font-bold tracking-tight text-content lg:text-h1">
+          <h1
+            className="hero-enter font-display text-h1-mobile font-bold tracking-tight text-content lg:text-h1"
+            style={{ animationDelay: "0ms" }}
+          >
             {SITE.name}
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg text-content-muted sm:text-xl">
+          <p
+            className="hero-enter mt-6 max-w-2xl text-lg text-content-muted sm:text-xl"
+            style={{ animationDelay: "150ms" }}
+          >
             {SITE.tagline}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div
+            className="hero-enter mt-10 flex flex-wrap items-center gap-4"
+            style={{ animationDelay: "450ms" }}
+          >
             <a href="#contacto" className="btn-primary">
               Hablemos
             </a>

@@ -6,6 +6,7 @@ import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollPath from "@/components/ScrollPath";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -80,6 +81,7 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
+          <SmoothScroll />
           <ScrollPath />
           <Navbar />
           {children}

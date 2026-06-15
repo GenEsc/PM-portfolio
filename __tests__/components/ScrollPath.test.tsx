@@ -42,6 +42,9 @@ describe("ScrollPath", () => {
     await waitFor(() => expect(path.style.strokeDashoffset).toBe("1000"));
 
     act(() => setScroll(500)); // 50% scrolled
-    await waitFor(() => expect(path.style.strokeDashoffset).toBe("500"));
+    // The offset lerps toward the target and snaps once close enough.
+    await waitFor(() => expect(path.style.strokeDashoffset).toBe("500"), {
+      timeout: 3000,
+    });
   });
 });
