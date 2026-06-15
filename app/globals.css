@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Theme tokens                                                        */
+/* Light is the default; .dark on <html> switches to the dark palette. */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #ffffff; /* fondo claro (default) */
+  --bg-secondary: #f8f9fa; /* gris muy suave */
+  --text: #111111; /* texto principal claro */
+  --text-muted: #6b7280; /* gris medio */
+  --border: #e5e7eb;
+  --accent: #1d9e75; /* verde esmeralda */
+  --accent-hover: #0f6e56; /* verde oscuro */
+  --accent-soft: #e1f5ee; /* verde muy claro */
+  --path-stroke: #1d9e75; /* path SVG de fondo */
+  --path-opacity: 0.12;
+
+  /* Monospace for code/stack labels. Kept as a system stack so the site loads
+     only two web fonts (Fraunces + Inter), per the "max 2 fonts" rule. */
+  --font-inter-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo,
+    Consolas, monospace;
+}
+
+.dark {
+  --bg: #0a0a0a; /* casi negro */
+  --bg-secondary: #111111; /* gris oscuro */
+  --text: #f9fafb; /* blanco */
+  --text-muted: #9ca3af; /* gris claro */
+  --border: #262626;
+  --accent: #1d9e75;
+  --accent-hover: #0f6e56;
+  --accent-soft: #0f2a22;
+  --path-stroke: #5dcaa5; /* verde más claro en dark */
+  --path-opacity: 0.15;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  /* Anchored sections account for the sticky navbar height. */
+  scroll-padding-top: 70px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+/* Respect users who prefer reduced motion: disable scroll-driven motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Pop-on-scroll enter animation (driven by AnimateOnScroll)           */
+/* ------------------------------------------------------------------ */
+.pop-init {
+  opacity: 0;
+  transform: scale(0.75);
+}
+
+.pop-in {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Background scroll path                                              */
+/* ------------------------------------------------------------------ */
+.scroll-path-stroke {
+  stroke: var(--path-stroke);
+  opacity: var(--path-opacity);
+}
+
+/* On small screens reduce opacity so it does not distract. */
+@media (max-width: 768px) {
+  .scroll-path-stroke {
+    opacity: 0.08;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium text-content transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .section-eyebrow {
+    @apply font-mono text-sm font-medium uppercase tracking-widest text-accent;
+  }
+}
