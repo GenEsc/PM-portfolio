@@ -1,0 +1,52 @@
+import AnimateOnScroll from "./AnimateOnScroll";
+import { STACK } from "@/lib/stack";
+
+/**
+ * Technology stack, grouped in three columns (Frontend / Backend / DevOps).
+ * Icons + names only — no proficiency bars, by design.
+ */
+export default function Stack() {
+  return (
+    <section
+      id="stack"
+      className="scroll-mt-[70px] bg-surface-secondary py-24 sm:py-28"
+    >
+      <div className="container-page">
+        <AnimateOnScroll>
+          <p className="section-eyebrow">Stack tecnológico</p>
+          <h2 className="mt-3 font-display text-h2-mobile font-bold text-content sm:text-h2">
+            Las herramientas con las que trabajo
+          </h2>
+        </AnimateOnScroll>
+
+        <div className="mt-14 grid gap-10 md:grid-cols-3">
+          {STACK.map((group, groupIndex) => (
+            <AnimateOnScroll key={group.title} delay={groupIndex * 50}>
+              <div>
+                <h3 className="font-display text-h3 font-semibold text-content">
+                  {group.title}
+                </h3>
+                <ul className="mt-6 space-y-4">
+                  {group.items.map((tech) => {
+                    const Icon = tech.icon;
+                    return (
+                      <li
+                        key={tech.name}
+                        className="flex items-center gap-3 text-content"
+                      >
+                        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-soft text-accent dark:bg-surface">
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <span className="font-mono text-sm">{tech.name}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
