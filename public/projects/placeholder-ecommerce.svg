@@ -1,0 +1,8 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#E1F5EE"/>
+  <rect x="60" y="60" width="680" height="60" rx="10" fill="#1D9E75" opacity="0.18"/>
+  <rect x="60" y="160" width="200" height="240" rx="12" fill="#1D9E75" opacity="0.25"/>
+  <rect x="300" y="160" width="200" height="240" rx="12" fill="#1D9E75" opacity="0.25"/>
+  <rect x="540" y="160" width="200" height="240" rx="12" fill="#1D9E75" opacity="0.25"/>
+  <text x="400" y="450" font-family="monospace" font-size="22" fill="#0F6E56" text-anchor="middle">E-commerce · placeholder</text>
+</svg>
