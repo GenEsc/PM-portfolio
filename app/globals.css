@@ -15,8 +15,6 @@
   --accent: #1d9e75; /* verde esmeralda */
   --accent-hover: #0f6e56; /* verde oscuro */
   --accent-soft: #e1f5ee; /* verde muy claro */
-  --path-stroke: #1d9e75; /* path SVG de fondo */
-  --path-opacity: 0.12;
 
   /* Monospace for code/stack labels. Kept as a system stack so the site loads
      only two web fonts (Fraunces + Inter), per the "max 2 fonts" rule. */
@@ -33,8 +31,6 @@
   --accent: #1d9e75;
   --accent-hover: #0f6e56;
   --accent-soft: #0f2a22;
-  --path-stroke: #5dcaa5; /* verde más claro en dark */
-  --path-opacity: 0.15;
 }
 
 /* ------------------------------------------------------------------ */
@@ -176,21 +172,6 @@ h4 {
   }
   .loader.is-exiting {
     opacity: 0;
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/* Background scroll path                                              */
-/* ------------------------------------------------------------------ */
-.scroll-path-stroke {
-  stroke: var(--path-stroke);
-  opacity: var(--path-opacity);
-}
-
-/* On small screens reduce opacity so it does not distract. */
-@media (max-width: 768px) {
-  .scroll-path-stroke {
-    opacity: 0.08;
   }
 }
 

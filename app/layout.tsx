@@ -6,7 +6,6 @@ import { ThemeProvider, themeInitScript } from "@/components/theme/ThemeProvider
 import Loader, { loaderInitScript } from "@/components/layout/Loader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ScrollPath from "@/components/animation/ScrollPath";
 import SmoothScroll from "@/components/animation/SmoothScroll";
 
 const fraunces = Fraunces({
@@ -86,7 +85,6 @@ export default function RootLayout({
         <ThemeProvider>
           <Loader />
           <SmoothScroll />
-          <ScrollPath />
           <Navbar />
           {children}
           <Footer />

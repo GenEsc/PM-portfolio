@@ -108,34 +108,43 @@ To add a parallax element, give it `data-parallax="<factor>"` inside the hero.
 
 ---
 
-## 6. Scroll-drawn background path
+## 6. Scroll-drawn career path (timeline)
 
-**Where:** `components/animation/ScrollPath.tsx`, CSS `.scroll-path-stroke` in globals.
+**Where:** `components/sections/CareerTimeline.tsx` (`#trayectoria` section).
+Data in `lib/data/timeline.tsx`.
 
-A fixed, full-viewport SVG sits behind all content (`-z-10`,
-`pointer-events: none`). The organic path has soft curves and **one closed loop
-("tirabuzón")**.
+The career timeline **is** the scroll path: a bold emerald line drawn on scroll
+that connects four milestones (BBVA → Dedalus → Izertis → Verti) and visually
+leads the eye toward the green contact section (§5 of the change brief). It is
+scoped to its own section below the hero, so the hero stays clean.
 
-- Color/opacity via CSS vars: `--path-stroke` / `--path-opacity`
-  (light: `#1D9E75` @ 12%, dark: `#5DCAA5` @ 15%, mobile reduced to 8%).
-- **Draw-on-scroll (lerp):** on mount the path length is read with
-  `getTotalLength()` and set as `stroke-dasharray`. The scroll event only updates
-  a **target** offset (`length * (1 - progress)`, where
-  `progress = scrollY / (scrollHeight - clientHeight)`). A continuous
-  `requestAnimationFrame` loop interpolates the **current** offset toward the
-  target each frame:
+- **Stroke:** `stroke-width` 7px on desktop, 4px on mobile, with
+  `vector-effect="non-scaling-stroke"` so the line stays a constant, bold width
+  no matter how the SVG is stretched. Colour is an emerald `<linearGradient>`
+  whose opacity deepens top→bottom (0.3 → 0.65) so its presence grows as it nears
+  contact.
+- **Draw-on-scroll (lerp):** each `<path data-draw>` uses **`pathLength="1"`**, so
+  the geometry is normalised — `stroke-dasharray: 1` is one dash covering the
+  whole path; `stroke-dashoffset` 1 = undrawn, 0 = fully drawn. Scroll computes a
+  section-relative `progress` (from the section's `getBoundingClientRect()` vs the
+  viewport) and sets `target = 1 - progress`. A `requestAnimationFrame` loop
+  lerps the current offset toward it:
 
   ```js
-  currentOffset += (targetOffset - currentOffset) * 0.08; // lerp factor
+  current += (target - current) * 0.08; // lerp factor
   ```
 
-  This makes the drawing lag slightly behind the scroll for a fluid, organic
-  feel instead of snapping to position. Tune the **lerp factor** between `0.05`
-  (very lazy) and `0.12` (more responsive); it snaps to the target once within
-  0.5px so it settles cleanly. Decoupling from the scroll event also avoids the
-  jerkiness of doing layout work on every scroll tick.
+  Using `pathLength` keeps the draw exactly proportional to scroll regardless of
+  scaling/`non-scaling-stroke`, and decoupling from the scroll event keeps it
+  fluid. `prefers-reduced-motion` skips the lerp (snaps to target).
+- **Layout:** desktop weaves the path left↔right (`d` cubic béziers) between
+  alternating cards; mobile is a thin straight rail with stacked cards. Node dots
+  are DOM elements positioned at the same coordinates as the path waypoints.
+- **Milestone cards** pop in via `AnimateOnScroll` (§1) as the path reaches them,
+  and stay visible (no re-animation on scroll-up).
 
-To redraw the shape, edit the `d` attribute of the `<path>`.
+To change the weave, edit the `d` attribute; to change milestones, edit
+`lib/data/timeline.tsx`.
 
 ---
 

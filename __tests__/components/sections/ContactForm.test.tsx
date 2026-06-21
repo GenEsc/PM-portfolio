@@ -64,4 +64,12 @@ describe("ContactForm", () => {
       )
     );
   });
+
+  it("uses the light-on-emerald palette when onAccent is set", () => {
+    render(<ContactForm onAccent />);
+    // Same fields and validation, but styled for the green contact block.
+    expect(screen.getByLabelText("Nombre")).toHaveClass("text-white");
+    const button = screen.getByRole("button", { name: "Enviar mensaje" });
+    expect(button).toHaveClass("bg-white");
+  });
 });
