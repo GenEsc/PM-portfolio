@@ -79,7 +79,9 @@ The scroll/animation behaviour is split into small, reusable pieces:
 - **`components/Counter.tsx`** — counts from 0 to a target with `easeOutCubic`
   once visible, a single time.
 - **`components/ScrollPath.tsx`** — a fixed background SVG whose path is drawn
-  via `stroke-dashoffset` proportional to overall scroll progress.
+  via `stroke-dashoffset`, lerped toward overall scroll progress each frame.
+- **`lib/smoothScroll.ts` + `components/SmoothScroll.tsx`** — JS momentum scroll
+  (`easeInOutCubic`) for anchor navigation, replacing CSS `scroll-behavior`.
 
 See [ANIMATIONS.md](./ANIMATIONS.md) for the exact easings, durations and logic.
 

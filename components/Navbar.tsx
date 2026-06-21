@@ -63,7 +63,8 @@ export default function Navbar() {
                   aria-current={isActive ? "true" : undefined}
                   data-active={isActive}
                   className={[
-                    "text-sm font-medium transition-colors",
+                    // Soft fade between active states (no instant swap).
+                    "text-sm font-medium transition-colors duration-300 ease-out",
                     isActive
                       ? "text-accent"
                       : "text-content-muted hover:text-content",

@@ -63,6 +63,9 @@ Object.defineProperty(window, "matchMedia", {
   }),
 });
 
+// jsdom does not implement scrollTo — mock it so smooth-scroll code can run.
+window.scrollTo = jest.fn();
+
 // Stable requestAnimationFrame for counter/scroll animations in tests.
 if (!global.requestAnimationFrame) {
   global.requestAnimationFrame = (cb: FrameRequestCallback): number =>

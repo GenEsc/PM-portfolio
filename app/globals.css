@@ -41,8 +41,9 @@
 /* Base                                                                */
 /* ------------------------------------------------------------------ */
 html {
-  scroll-behavior: smooth;
-  /* Anchored sections account for the sticky navbar height. */
+  /* Smooth scrolling is handled in JS (lib/smoothScroll.ts) for easing control
+     and cross-browser consistency — no CSS `scroll-behavior: smooth`.
+     scroll-padding-top remains as a no-JS fallback for native anchor jumps. */
   scroll-padding-top: 70px;
 }
 
@@ -64,9 +65,6 @@ h4 {
 
 /* Respect users who prefer reduced motion: disable scroll-driven motion. */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
@@ -89,6 +87,96 @@ h4 {
   transform: scale(1);
   transition: opacity 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
     transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero page-entry animation                                          */
+/* Staggered fade + slide-up on first load. CSS keyframes (not JS) so it */
+/* runs without hydration and degrades gracefully.                     */
+/* ------------------------------------------------------------------ */
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  opacity: 0;
+  animation: heroEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ------------------------------------------------------------------ */
+/* Loading screen (components/Loader.tsx)                              */
+/* Full-screen overlay with a spinning brand mark, shown once per      */
+/* session. Background uses --bg so it matches the active theme (no    */
+/* beige, no theme flash). Exits by sliding up to reveal the page.     */
+/* ------------------------------------------------------------------ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+  transform: translateY(0);
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.loader.is-exiting {
+  transform: translateY(-100%);
+}
+
+.loader__logo {
+  width: 96px;
+  height: 96px;
+  color: var(--accent); /* verde esmeralda in light and dark */
+}
+
+/* Continuous spin (+ subtle scale pulse) while loading. */
+@media (prefers-reduced-motion: no-preference) {
+  .loader__logo {
+    animation: loaderSpin 1.2s linear infinite;
+  }
+}
+
+/* Freeze the logo the moment the exit starts (it has finished its cycle). */
+.loader.is-exiting .loader__logo {
+  animation-play-state: paused;
+}
+
+@keyframes loaderSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.04);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Hidden synchronously before paint on repeat visits (loaderInitScript). */
+.loader-seen .loader {
+  display: none !important;
+}
+
+/* Reduced motion: static logo, simple fade instead of the slide-up. */
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    transition: opacity 300ms ease;
+    transform: none !important;
+  }
+  .loader.is-exiting {
+    opacity: 0;
+  }
 }
 
 /* ------------------------------------------------------------------ */

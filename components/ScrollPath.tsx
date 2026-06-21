@@ -21,30 +21,44 @@ export default function ScrollPath() {
 
     const length = path.getTotalLength();
     path.style.strokeDasharray = `${length}`;
-    path.style.strokeDashoffset = `${length}`;
 
-    let ticking = false;
+    // Scroll updates only the *target*; a rAF loop lerps the *current* offset
+    // toward it so the drawing lags slightly behind the scroll (fluid, organic)
+    // instead of snapping. Decoupling from the scroll event also avoids the
+    // jerkiness of doing layout work on every scroll tick.
+    const LERP = 0.08;
 
-    const update = () => {
+    const computeTarget = () => {
       const doc = document.documentElement;
       const scrollable = doc.scrollHeight - doc.clientHeight;
       const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
       const clamped = Math.min(Math.max(progress, 0), 1);
-      path.style.strokeDashoffset = `${length * (1 - clamped)}`;
-      ticking = false;
+      return length * (1 - clamped);
     };
+
+    let targetOffset = computeTarget();
+    let currentOffset = targetOffset; // start drawn to the initial position
+    path.style.strokeDashoffset = `${currentOffset}`;
+
+    let raf = 0;
+    const animate = () => {
+      currentOffset += (targetOffset - currentOffset) * LERP;
+      // Snap when close enough so it settles exactly on target.
+      if (Math.abs(targetOffset - currentOffset) < 0.5) {
+        currentOffset = targetOffset;
+      }
+      path.style.strokeDashoffset = `${currentOffset}`;
+      raf = window.requestAnimationFrame(animate);
+    };
+    raf = window.requestAnimationFrame(animate);
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
-      }
+      targetOffset = computeTarget();
     };
-
-    update(); // initial draw state
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      window.cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
