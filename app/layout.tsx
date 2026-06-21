@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
+import Loader, { loaderInitScript } from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollPath from "@/components/ScrollPath";
@@ -78,9 +79,12 @@ export default function RootLayout({
       <head>
         {/* Set the initial theme before paint to avoid a flash (FOUC). */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Hide the loader before paint on repeat visits (same session). */}
+        <script dangerouslySetInnerHTML={{ __html: loaderInitScript }} />
       </head>
       <body>
         <ThemeProvider>
+          <Loader />
           <SmoothScroll />
           <ScrollPath />
           <Navbar />

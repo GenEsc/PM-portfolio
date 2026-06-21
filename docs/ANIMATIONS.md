@@ -190,3 +190,28 @@ degrades gracefully.
 Navbar links use `transition-colors duration-300 ease-out` so the active section
 highlight fades softly (≈`color 0.3s ease`) rather than swapping instantly. See
 section 4 for how the active section is detected.
+
+---
+
+## 11. Loading screen (first paint)
+
+**Where:** `components/Loader.tsx` + `.loader` / `loaderSpin` in `app/globals.css`.
+
+Full-screen overlay shown once per session over a **theme-matched** background
+(`var(--bg)`, so no beige and no theme flash). Plays at most once per browser
+session — `sessionStorage` key `hasSeenLoader` gates it, and `loaderInitScript`
+(in `app/layout.tsx`, mirroring `themeInitScript`) hides it before paint on
+repeat visits.
+
+- **Spin:** `loaderSpin 1.2s linear infinite` — `rotate(0→360deg)` with a subtle
+  `scale(1→1.04→1)` pulse at the 50% keyframe. Logo color `var(--accent)`.
+- **Timing:** stays up until assets are ready (`window` `load`) **and** a minimum
+  of **1000ms** has elapsed, whichever is later.
+- **Exit:** the logo finishes its current rotation (it never cuts mid-spin —
+  computed from elapsed time, then `animation-play-state: paused`), then the
+  overlay slides up `translateY(-100%)` over **700ms**,
+  easing **`cubic-bezier(0.65, 0, 0.35, 1)`** (no bounce), revealing the page.
+- **Scroll lock:** `body { overflow: hidden }` while the overlay is up, restored
+  on exit.
+- **Reduced motion:** no spin (static logo) and a simple opacity fade instead of
+  the slide-up.

@@ -111,6 +111,75 @@ h4 {
 }
 
 /* ------------------------------------------------------------------ */
+/* Loading screen (components/Loader.tsx)                              */
+/* Full-screen overlay with a spinning brand mark, shown once per      */
+/* session. Background uses --bg so it matches the active theme (no    */
+/* beige, no theme flash). Exits by sliding up to reveal the page.     */
+/* ------------------------------------------------------------------ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+  transform: translateY(0);
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.loader.is-exiting {
+  transform: translateY(-100%);
+}
+
+.loader__logo {
+  width: 96px;
+  height: 96px;
+  color: var(--accent); /* verde esmeralda in light and dark */
+}
+
+/* Continuous spin (+ subtle scale pulse) while loading. */
+@media (prefers-reduced-motion: no-preference) {
+  .loader__logo {
+    animation: loaderSpin 1.2s linear infinite;
+  }
+}
+
+/* Freeze the logo the moment the exit starts (it has finished its cycle). */
+.loader.is-exiting .loader__logo {
+  animation-play-state: paused;
+}
+
+@keyframes loaderSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.04);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Hidden synchronously before paint on repeat visits (loaderInitScript). */
+.loader-seen .loader {
+  display: none !important;
+}
+
+/* Reduced motion: static logo, simple fade instead of the slide-up. */
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    transition: opacity 300ms ease;
+    transform: none !important;
+  }
+  .loader.is-exiting {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Background scroll path                                              */
 /* ------------------------------------------------------------------ */
 .scroll-path-stroke {

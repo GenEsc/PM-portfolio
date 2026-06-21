@@ -50,6 +50,15 @@ tests. Depends on `useScrollDirection` and `useActiveSection`.
 
 Brand, copyright and social links. No props.
 
+### `Loader` — Client
+
+Full-screen loading overlay with a spinning `Logo`, shown once per session on
+first paint. Background uses `var(--bg)` so it matches the active theme. Stays up
+until assets load and a 1000ms minimum has passed, then slides up to reveal the
+page. Gated by `sessionStorage` (`hasSeenLoader`); also exports `loaderInitScript`
+to hide the overlay before paint on repeat visits. Respects
+`prefers-reduced-motion`. No props. See [ANIMATIONS.md](./ANIMATIONS.md) §11.
+
 ---
 
 ## Sections
