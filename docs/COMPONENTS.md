@@ -92,14 +92,17 @@ navbar anchors.
 
 ## Projects
 
-### `ProjectCard` — Server
+Renders one of two card kinds based on `project.kind`:
 
-Card with hover overlay (dark-green, fades in, reveals "Ver demo" / "Ver código")
-and a `scale(1.02)` lift. The whole card links to the detail page.
+- **`professional`** — informational card: generic icon + company name as styled
+  text (never a logo) + description. Not clickable; no tech chips or overlay.
+- **`personal`** — clickable card with a screenshot, tech chips, a dark-green
+  hover overlay ("Ver demo" / "Ver código") and a `scale(1.02)` lift; links to
+  the detail page.
 
 | Prop      | Type      | Description                          |
 | --------- | --------- | ------------------------------------ |
-| `project` | `Project` | A project from `lib/data/projects.ts`.    |
+| `project` | `Project` | A project from `lib/data/projects.ts` (`ProfessionalProject \| PersonalProject`). |
 
 ```tsx
 <ProjectCard project={PROJECTS[0]} />

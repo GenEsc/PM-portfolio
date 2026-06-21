@@ -9,17 +9,7 @@ import { STATS } from "@/lib/data/site";
 export default function About() {
   return (
     <section id="sobre-mi" className="scroll-mt-[70px] py-24 sm:py-28">
-      <div className="container-page grid items-center gap-12 md:grid-cols-[auto,1fr] md:gap-16">
-        {/* Photo placeholder (rounded square with initials) */}
-        <AnimateOnScroll className="mx-auto md:mx-0">
-          <div
-            aria-hidden="true"
-            className="flex h-44 w-44 items-center justify-center rounded-3xl bg-accent-soft text-5xl font-bold text-accent sm:h-56 sm:w-56 dark:bg-surface-secondary"
-          >
-            PE
-          </div>
-        </AnimateOnScroll>
-
+      <div className="container-page max-w-3xl">
         <div>
           <AnimateOnScroll>
             <p className="section-eyebrow">Sobre mí</p>

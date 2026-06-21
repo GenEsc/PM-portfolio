@@ -8,9 +8,12 @@ import { SITE } from "@/lib/data/site";
 
 type Params = { slug: string };
 
-/** Pre-render a static page for every project at build time. */
+/** Pre-render a static page for every personal project at build time.
+ *  Professional-experience entries are not clickable and have no detail page. */
 export function generateStaticParams(): Params[] {
-  return PROJECTS.map((project) => ({ slug: project.slug }));
+  return PROJECTS.filter((project) => project.kind === "personal").map(
+    (project) => ({ slug: project.slug })
+  );
 }
 
 export function generateMetadata({
@@ -19,7 +22,8 @@ export function generateMetadata({
   params: Params;
 }): Metadata {
   const project = getProjectBySlug(params.slug);
-  if (!project) return { title: "Proyecto no encontrado" };
+  if (project?.kind !== "personal")
+    return { title: "Proyecto no encontrado" };
 
   const title = `${project.title} — ${SITE.shortName}`;
   return {
@@ -37,7 +41,8 @@ export function generateMetadata({
 
 export default function ProjectDetailPage({ params }: { params: Params }) {
   const project = getProjectBySlug(params.slug);
-  if (!project) notFound();
+  // Only personal projects have a detail page; professional entries 404.
+  if (project?.kind !== "personal") notFound();
 
   return (
     <main className="container-page py-28">

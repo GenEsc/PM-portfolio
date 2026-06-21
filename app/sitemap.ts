@@ -13,11 +13,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
-    ...PROJECTS.map((project) => ({
-      url: `${SITE.url}/proyectos/${project.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
+    // Only personal projects have a detail page (professional entries do not).
+    ...PROJECTS.filter((project) => project.kind === "personal").map(
+      (project) => ({
+        url: `${SITE.url}/proyectos/${project.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      })
+    ),
   ];
 }
