@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import ServicesSection from "@/components/ServicesSection";
+import ServicesSection from "@/components/sections/ServicesSection";
 
 describe("ServicesSection", () => {
   it("renders the three service cards", () => {

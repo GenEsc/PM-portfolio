@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { FaReact, FaAngular, FaJs, FaDocker } from "react-icons/fa6";
 import { SiSpringboot, SiTypescript } from "react-icons/si";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/data/site";
 
 /**
  * Hero section.

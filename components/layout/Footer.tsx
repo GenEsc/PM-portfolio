@@ -1,6 +1,6 @@
 import { FiGithub, FiLinkedin } from "react-icons/fi";
 import Logo from "./Logo";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/data/site";
 
 /** Site footer with brand, copyright and social links. */
 export default function Footer() {

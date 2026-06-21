@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
-import ThemeToggle from "@/components/ThemeToggle";
-import { renderWithTheme } from "../test-utils";
+import ThemeToggle from "@/components/theme/ThemeToggle";
+import { renderWithTheme } from "../../test-utils";
 
 describe("ThemeToggle", () => {
   beforeEach(() => {

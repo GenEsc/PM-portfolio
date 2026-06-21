@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiExternalLink, FiGithub } from "react-icons/fi";
-import type { Project } from "@/lib/projects";
+import type { Project } from "@/lib/data/projects";
 
 /**
  * Project card with a hover overlay.

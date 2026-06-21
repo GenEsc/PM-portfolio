@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import ProjectCard from "@/components/ProjectCard";
-import { PROJECTS } from "@/lib/projects";
+import ProjectCard from "@/components/sections/ProjectCard";
+import { PROJECTS } from "@/lib/data/projects";
 
 const project = PROJECTS[0];
 

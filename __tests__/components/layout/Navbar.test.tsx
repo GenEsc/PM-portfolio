@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor, act } from "@testing-library/react";
-import Navbar from "@/components/Navbar";
-import { renderWithTheme, setScroll } from "../test-utils";
+import Navbar from "@/components/layout/Navbar";
+import { renderWithTheme, setScroll } from "../../test-utils";
 
 describe("Navbar", () => {
   beforeEach(() => {

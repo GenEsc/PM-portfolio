@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowLeft, FiExternalLink, FiGithub } from "react-icons/fi";
-import { PROJECTS, getProjectBySlug } from "@/lib/projects";
-import { SITE } from "@/lib/site";
+import { PROJECTS, getProjectBySlug } from "@/lib/data/projects";
+import { SITE } from "@/lib/data/site";
 
 type Params = { slug: string };
 

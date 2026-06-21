@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { smoothScrollTo } from "@/lib/smoothScroll";
-import { SCROLL_OFFSET } from "@/lib/site";
+import { smoothScrollTo } from "@/lib/utils/smoothScroll";
+import { SCROLL_OFFSET } from "@/lib/data/site";
 
 /**
  * Global handler that turns in-page anchor clicks (`<a href="#...">`) into a

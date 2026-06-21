@@ -1,6 +1,6 @@
-import AnimateOnScroll from "./AnimateOnScroll";
-import Counter from "./Counter";
-import { STATS } from "@/lib/site";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
+import Counter from "@/components/animation/Counter";
+import { STATS } from "@/lib/data/site";
 
 /**
  * "Sobre mí" section: a short, client-oriented intro plus animated counters.

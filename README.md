@@ -79,7 +79,7 @@ npm start
 ### Logo asset
 
 The UI renders the brand mark as an inline, color-adaptive React component
-(`components/Logo.tsx`), and a static `public/logo.svg` is included. If you have
+(`components/layout/Logo.tsx`), and a static `public/logo.svg` is included. If you have
 an official logo file, replace `public/logo.svg` with it before deploying.
 
 ### Environment variables
@@ -121,10 +121,16 @@ pedroescacena.dev/
 │   ├── not-found.tsx         # 404 page
 │   ├── api/contact/route.ts  # Contact form endpoint (Resend)
 │   └── proyectos/[slug]/     # Dynamic project detail pages
-├── components/               # React components (see docs/COMPONENTS.md)
+├── components/               # React components, grouped by role (see docs/COMPONENTS.md)
+│   ├── layout/               #   chrome & overlays (Navbar, Footer, Logo, Loader)
+│   ├── theme/                #   ThemeProvider, ThemeToggle
+│   ├── sections/             #   page sections + sub-components (Hero, About, …)
+│   └── animation/            #   primitives (AnimateOnScroll, Counter, ScrollPath, SmoothScroll)
 ├── hooks/                    # Custom hooks (scroll direction, active section)
-├── lib/                      # Data & constants (site, projects, stack)
-├── __tests__/                # Jest + RTL tests, mirroring the app/components tree
+├── lib/                      # Framework-agnostic code
+│   ├── data/                 #   content & constants (site, projects, stack)
+│   └── utils/                #   helpers (smoothScroll)
+├── __tests__/                # Jest + RTL tests, mirroring the components/ & lib/ structure
 ├── docs/                     # Architecture, animations, components & contributing docs
 └── public/                   # Static assets (logo, project screenshots)
 ```

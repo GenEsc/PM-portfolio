@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import Stack from "@/components/Stack";
-import { STACK } from "@/lib/stack";
+import Stack from "@/components/sections/Stack";
+import { STACK } from "@/lib/data/stack";
 
 describe("Stack", () => {
   it("renders the three group titles", () => {

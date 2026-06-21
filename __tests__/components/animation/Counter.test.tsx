@@ -1,6 +1,6 @@
 import { render, screen, act, waitFor } from "@testing-library/react";
-import Counter from "@/components/Counter";
-import { getLastObserver } from "../test-utils";
+import Counter from "@/components/animation/Counter";
+import { getLastObserver } from "../../test-utils";
 
 describe("Counter", () => {
   it("starts at 0 before entering the viewport", () => {

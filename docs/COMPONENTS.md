@@ -99,7 +99,7 @@ and a `scale(1.02)` lift. The whole card links to the detail page.
 
 | Prop      | Type      | Description                          |
 | --------- | --------- | ------------------------------------ |
-| `project` | `Project` | A project from `lib/projects.ts`.    |
+| `project` | `Project` | A project from `lib/data/projects.ts`.    |
 
 ```tsx
 <ProjectCard project={PROJECTS[0]} />
@@ -159,7 +159,7 @@ target each frame. No props. Rendered once in `app/layout.tsx`.
 ### `SmoothScroll` — Client
 
 Headless (renders `null`). Mounts one delegated listener that turns in-page
-anchor clicks into a JS momentum scroll (`lib/smoothScroll.ts`, `easeInOutCubic`,
+anchor clicks into a JS momentum scroll (`lib/utils/smoothScroll.ts`, `easeInOutCubic`,
 distance-based duration, 70px navbar offset). No props. Rendered once in
 `app/layout.tsx`.
 

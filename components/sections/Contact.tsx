@@ -1,7 +1,7 @@
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
-import AnimateOnScroll from "./AnimateOnScroll";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import ContactForm from "./ContactForm";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/data/site";
 
 /** "Contacto" section: heading, form, visible email and social links. */
 export default function Contact() {

@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/data/site";
 
 export const alt = `${SITE.name} — ${SITE.role}`;
 export const size = { width: 1200, height: 630 };

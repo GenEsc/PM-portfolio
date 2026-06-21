@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/data/site";
 
 type Errors = {
   name?: string;

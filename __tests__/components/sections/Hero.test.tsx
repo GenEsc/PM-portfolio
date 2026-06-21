@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import Hero from "@/components/Hero";
-import { SITE } from "@/lib/site";
+import Hero from "@/components/sections/Hero";
+import { SITE } from "@/lib/data/site";
 
 describe("Hero", () => {
   it("renders the name as the main heading", () => {

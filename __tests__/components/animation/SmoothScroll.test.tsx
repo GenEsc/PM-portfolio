@@ -1,5 +1,5 @@
 import { render, waitFor } from "@testing-library/react";
-import SmoothScroll from "@/components/SmoothScroll";
+import SmoothScroll from "@/components/animation/SmoothScroll";
 
 describe("SmoothScroll", () => {
   beforeEach(() => {

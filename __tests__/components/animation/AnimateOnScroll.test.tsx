@@ -1,6 +1,6 @@
 import { render, screen, act } from "@testing-library/react";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { getLastObserver } from "../test-utils";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
+import { getLastObserver } from "../../test-utils";
 
 describe("AnimateOnScroll", () => {
   it("is hidden (pop-init) before entering the viewport", () => {
