@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react";
-import { smoothScrollTo, scrollDurationFor } from "@/lib/smoothScroll";
+import { smoothScrollTo, scrollDurationFor } from "@/lib/utils/smoothScroll";
 
 describe("scrollDurationFor", () => {
   it("scales with distance and clamps between 500ms and 1200ms", () => {

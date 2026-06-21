@@ -1,6 +1,6 @@
 import { FiCode, FiRefreshCw, FiShoppingCart } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import AnimateOnScroll from "./AnimateOnScroll";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 
 type Service = {
   icon: IconType;

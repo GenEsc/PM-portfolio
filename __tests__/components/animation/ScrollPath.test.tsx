@@ -1,6 +1,6 @@
 import { render, screen, act, waitFor } from "@testing-library/react";
-import ScrollPath from "@/components/ScrollPath";
-import { setScroll } from "../test-utils";
+import ScrollPath from "@/components/animation/ScrollPath";
+import { setScroll } from "../../test-utils";
 
 // jsdom does not implement SVG geometry — provide a fixed path length.
 beforeAll(() => {

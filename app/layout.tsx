@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
-import { SITE } from "@/lib/site";
-import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
-import Loader, { loaderInitScript } from "@/components/Loader";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ScrollPath from "@/components/ScrollPath";
-import SmoothScroll from "@/components/SmoothScroll";
+import { SITE } from "@/lib/data/site";
+import { ThemeProvider, themeInitScript } from "@/components/theme/ThemeProvider";
+import Loader, { loaderInitScript } from "@/components/layout/Loader";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import ScrollPath from "@/components/animation/ScrollPath";
+import SmoothScroll from "@/components/animation/SmoothScroll";
 
 const fraunces = Fraunces({
   subsets: ["latin"],

@@ -12,13 +12,13 @@ How to add a project, update personal data and deploy a new version.
 
 ## Add a new project to the portfolio
 
-Projects are data-driven from [`lib/projects.ts`](../lib/projects.ts). Adding one
+Projects are data-driven from [`lib/data/projects.ts`](../lib/data/projects.ts). Adding one
 requires **no component changes**.
 
 1. **(Optional) Add a screenshot** to `public/projects/`, e.g.
    `public/projects/my-shop.png` (16:10 looks best on the cards).
 
-2. **Append an entry** to the `PROJECTS` array in `lib/projects.ts`:
+2. **Append an entry** to the `PROJECTS` array in `lib/data/projects.ts`:
 
    ```ts
    {
@@ -53,14 +53,14 @@ All personal content is centralized — never hard-code it in components.
 
 | What to change                       | Where                              |
 | ------------------------------------ | ---------------------------------- |
-| Name, role, tagline, email, socials  | `lib/site.ts` → `SITE`             |
-| Navbar links / section ids           | `lib/site.ts` → `NAV_LINKS`        |
-| Counter values (years, techs, devs)  | `lib/site.ts` → `STATS`            |
-| Technology stack (3 columns)         | `lib/stack.tsx` → `STACK`          |
-| Services cards                       | `components/ServicesSection.tsx`   |
-| About text                           | `components/About.tsx`             |
+| Name, role, tagline, email, socials  | `lib/data/site.ts` → `SITE`             |
+| Navbar links / section ids           | `lib/data/site.ts` → `NAV_LINKS`        |
+| Counter values (years, techs, devs)  | `lib/data/site.ts` → `STATS`            |
+| Technology stack (3 columns)         | `lib/data/stack.tsx` → `STACK`          |
+| Services cards                       | `components/sections/ServicesSection.tsx`   |
+| About text                           | `components/sections/About.tsx`             |
 | Theme colors                         | `app/globals.css` (CSS variables)  |
-| Logo                                 | `public/logo.svg` + `components/Logo.tsx` |
+| Logo                                 | `public/logo.svg` + `components/layout/Logo.tsx` |
 
 After editing, run `npm run dev` and check the page, then `npm test`.
 

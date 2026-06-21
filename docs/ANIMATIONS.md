@@ -9,7 +9,7 @@ override in `app/globals.css`.
 
 ## 1. Pop on scroll (enter animation)
 
-**Where:** `components/AnimateOnScroll.tsx`, CSS in `app/globals.css`
+**Where:** `components/animation/AnimateOnScroll.tsx`, CSS in `app/globals.css`
 (`.pop-init` / `.pop-in`).
 
 - From: `opacity: 0; transform: scale(0.75)` (`.pop-init`)
@@ -35,7 +35,7 @@ when it triggers, edit the `threshold`.
 
 ## 2. Animated counters
 
-**Where:** `components/Counter.tsx`. Used in the About section.
+**Where:** `components/animation/Counter.tsx`. Used in the About section.
 
 - Counts from **0** to `value`.
 - Duration: **1200ms** (default `duration` prop).
@@ -53,7 +53,7 @@ displayed value; on completion it snaps to `value` and the observer disconnects.
 
 ## 3. Navbar hide/show on scroll
 
-**Where:** `components/Navbar.tsx` + `hooks/useScrollDirection.ts`.
+**Where:** `components/layout/Navbar.tsx` + `hooks/useScrollDirection.ts`.
 
 - **Scroll down** (and not at top): navbar hides via `transform: translateY(-100%)`.
 - **Scroll up** (any amount): navbar reappears immediately.
@@ -73,7 +73,7 @@ by tests).
 
 ## 4. Active navbar link
 
-**Where:** `hooks/useActiveSection.ts` + `components/Navbar.tsx`.
+**Where:** `hooks/useActiveSection.ts` + `components/layout/Navbar.tsx`.
 
 The active section's link is highlighted in emerald (`text-accent`).
 
@@ -86,7 +86,7 @@ largest `intersectionRatio` wins and its link gets `data-active="true"` +
 
 ## 5. Cursor parallax (hero only)
 
-**Where:** `components/Hero.tsx`.
+**Where:** `components/sections/Hero.tsx`.
 
 Decorative circles and floating tech icons move **opposite** to the cursor to
 create depth. Active only in the hero and only on fine-pointer (non-touch)
@@ -110,7 +110,7 @@ To add a parallax element, give it `data-parallax="<factor>"` inside the hero.
 
 ## 6. Scroll-drawn background path
 
-**Where:** `components/ScrollPath.tsx`, CSS `.scroll-path-stroke` in globals.
+**Where:** `components/animation/ScrollPath.tsx`, CSS `.scroll-path-stroke` in globals.
 
 A fixed, full-viewport SVG sits behind all content (`-z-10`,
 `pointer-events: none`). The organic path has soft curves and **one closed loop
@@ -141,7 +141,7 @@ To redraw the shape, edit the `d` attribute of the `<path>`.
 
 ## 7. Availability badge pulse
 
-**Where:** `components/Hero.tsx` + `tailwind.config.ts` keyframes.
+**Where:** `components/sections/Hero.tsx` + `tailwind.config.ts` keyframes.
 
 A green dot pulses infinitely. Keyframe `pulse` animates `scale` (1 → 1.6) and
 `opacity` (1 → 0.4); exposed as the `animate-pulse-dot` utility
@@ -151,10 +151,10 @@ A green dot pulses infinitely. Keyframe `pulse` animates `scale` (1 → 1.6) and
 
 ## 8. Smooth scroll (JS momentum)
 
-**Where:** `lib/smoothScroll.ts` + `components/SmoothScroll.tsx`.
+**Where:** `lib/utils/smoothScroll.ts` + `components/animation/SmoothScroll.tsx`.
 
 CSS `scroll-behavior: smooth` is **not** used (abrupt, browser-dependent, no
-easing control). Instead, `components/SmoothScroll.tsx` mounts a single delegated
+easing control). Instead, `components/animation/SmoothScroll.tsx` mounts a single delegated
 click listener that intercepts in-page anchor clicks (`<a href="#...">`) and
 animates the scroll in JS:
 
@@ -172,7 +172,7 @@ jumps.
 
 ## 9. Hero page-entry animation
 
-**Where:** `components/Hero.tsx` + `.hero-enter` keyframes in `app/globals.css`.
+**Where:** `components/sections/Hero.tsx` + `.hero-enter` keyframes in `app/globals.css`.
 
 On first load the hero elements fade + slide up in a staggered sequence. Built
 with CSS `@keyframes heroEnter` (not JS) so it runs without hydration and
@@ -195,7 +195,7 @@ section 4 for how the active section is detected.
 
 ## 11. Loading screen (first paint)
 
-**Where:** `components/Loader.tsx` + `.loader` / `loaderSpin` in `app/globals.css`.
+**Where:** `components/layout/Loader.tsx` + `.loader` / `loaderSpin` in `app/globals.css`.
 
 Full-screen overlay shown once per session over a **theme-matched** background
 (`var(--bg)`, so no beige and no theme flash). Plays at most once per browser

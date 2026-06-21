@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { PROJECTS } from "@/lib/projects";
-import { SITE } from "@/lib/site";
+import { PROJECTS } from "@/lib/data/projects";
+import { SITE } from "@/lib/data/site";
 
 /** Auto-generated sitemap: home page + every project detail page. */
 export default function sitemap(): MetadataRoute.Sitemap {

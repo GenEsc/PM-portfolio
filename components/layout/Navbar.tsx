@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { NAV_LINKS, SECTION_IDS, SITE } from "@/lib/site";
+import { NAV_LINKS, SECTION_IDS, SITE } from "@/lib/data/site";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useActiveSection } from "@/hooks/useActiveSection";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 import Logo from "./Logo";
 
 /**

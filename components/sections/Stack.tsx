@@ -1,5 +1,5 @@
-import AnimateOnScroll from "./AnimateOnScroll";
-import { STACK } from "@/lib/stack";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
+import { STACK } from "@/lib/data/stack";
 
 /**
  * Technology stack, grouped in three columns (Frontend / Backend / DevOps).

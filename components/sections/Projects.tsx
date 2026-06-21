@@ -1,6 +1,6 @@
-import AnimateOnScroll from "./AnimateOnScroll";
+import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import ProjectCard from "./ProjectCard";
-import { PROJECTS } from "@/lib/projects";
+import { PROJECTS } from "@/lib/data/projects";
 
 /**
  * "Proyectos" section: grid of project cards.
