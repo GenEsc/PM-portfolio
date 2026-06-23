@@ -21,9 +21,9 @@ describe("Stack", () => {
     }
   });
 
-  it("renders 12 technologies in total", () => {
+  it("renders 13 technologies in total", () => {
     render(<Stack />);
     const total = STACK.reduce((sum, group) => sum + group.items.length, 0);
-    expect(total).toBe(12);
+    expect(total).toBe(13);
   });
 });

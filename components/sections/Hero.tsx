@@ -9,6 +9,8 @@ import {
   SpringBootIcon,
   TypeScriptIcon,
 } from "@/components/icons/brand";
+import PrimaryButton from "@/components/ui/PrimaryButton";
+import SecondaryButton from "@/components/ui/SecondaryButton";
 import { SITE } from "@/lib/data/site";
 
 /**
@@ -136,12 +138,8 @@ export default function Hero() {
             className="hero-enter mt-10 flex flex-wrap items-center gap-4"
             style={{ animationDelay: "450ms" }}
           >
-            <a href="#contacto" className="btn-primary">
-              Hablemos
-            </a>
-            <a href="#proyectos" className="btn-secondary">
-              Ver proyectos
-            </a>
+            <PrimaryButton href="#contacto">Hablemos</PrimaryButton>
+            <SecondaryButton href="#proyectos">Ver proyectos</SecondaryButton>
           </div>
         </div>
       </div>

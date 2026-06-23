@@ -1,5 +1,8 @@
-import { Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/icons/brand";
+import {
+  AtSignIcon,
+  GithubIcon,
+  LinkedinIcon,
+} from "@/components/icons/animated";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import ContactForm from "./ContactForm";
 import { SITE } from "@/lib/data/site";
@@ -40,7 +43,7 @@ export default function Contact() {
               href={`mailto:${SITE.email}`}
               className="inline-flex items-center gap-3 text-content transition-colors hover:text-accent"
             >
-              <Mail aria-hidden="true" className="h-5 w-5" />
+              <AtSignIcon size={20} className="text-current" />
               {SITE.email}
             </a>
             <div className="flex gap-4 pt-2">
@@ -51,7 +54,7 @@ export default function Contact() {
                 aria-label="LinkedIn"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
               >
-                <LinkedinIcon aria-hidden="true" className="h-5 w-5" />
+                <LinkedinIcon size={20} aria-hidden="true" />
               </a>
               <a
                 href={SITE.github}
@@ -60,7 +63,7 @@ export default function Contact() {
                 aria-label="GitHub"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
               >
-                <GithubIcon aria-hidden="true" className="h-5 w-5" />
+                <GithubIcon size={20} aria-hidden="true" />
               </a>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 export default function NotFound() {
   return (
@@ -10,9 +10,9 @@ export default function NotFound() {
       <p className="mt-4 max-w-md text-content-muted">
         La página que buscas no existe o se ha movido.
       </p>
-      <Link href="/" className="btn-primary mt-8">
+      <PrimaryButton href="/" className="mt-8">
         Volver al inicio
-      </Link>
+      </PrimaryButton>
     </main>
   );
 }

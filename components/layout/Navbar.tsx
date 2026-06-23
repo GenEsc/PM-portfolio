@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-animated";
 import { NAV_LINKS, SECTION_IDS, SITE } from "@/lib/data/site";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -88,9 +88,9 @@ export default function Navbar() {
             onClick={() => setMenuOpen((open) => !open)}
           >
             {menuOpen ? (
-              <X className="h-5 w-5" aria-hidden="true" />
+              <XIcon size={20} className="text-current" />
             ) : (
-              <Menu className="h-5 w-5" aria-hidden="true" />
+              <MenuIcon size={20} className="text-current" />
             )}
           </button>
         </div>

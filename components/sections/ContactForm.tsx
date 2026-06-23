@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { SendIcon } from "lucide-animated";
 import { SITE } from "@/lib/data/site";
 
 type Errors = {
@@ -138,7 +139,14 @@ export default function ContactForm({ onAccent = false }: { onAccent?: boolean }
       </div>
 
       <button type="submit" className={buttonClass} disabled={status === "submitting"}>
-        {status === "submitting" ? "Enviando…" : "Enviar mensaje"}
+        {status === "submitting" ? (
+          "Enviando…"
+        ) : (
+          <>
+            <SendIcon size={18} />
+            Enviar mensaje
+          </>
+        )}
       </button>
 
       {status === "success" && (
