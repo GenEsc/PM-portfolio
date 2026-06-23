@@ -35,7 +35,6 @@ describe("ProjectCard", () => {
       ).toBeInTheDocument();
       expect(screen.getByText(professional.company)).toBeInTheDocument();
       expect(screen.getByText(professional.description)).toBeInTheDocument();
-      expect(screen.getByText(/Experiencia profesional/i)).toBeInTheDocument();
     });
 
     it("is not clickable and has no tech chips or hover overlay", () => {

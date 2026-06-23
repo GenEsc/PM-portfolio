@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FiExternalLink, FiGithub } from "react-icons/fi";
-import { LuLandmark, LuCode2, LuLayers, LuUsers } from "react-icons/lu";
-import type { IconType } from "react-icons";
+import { ExternalLink, Landmark, Code2, Layers, Users } from "lucide-react";
+import { GithubIcon } from "@/components/icons/brand";
+import type { IconType } from "@/lib/icon";
 import type {
   Project,
   ProfessionalProject,
@@ -12,10 +12,10 @@ import type {
 
 /** Generic, brand-neutral icons (no company logos — trademark-safe). */
 const ICONS: Record<ProjectIcon, IconType> = {
-  bank: LuLandmark,
-  code: LuCode2,
-  layers: LuLayers,
-  team: LuUsers,
+  bank: Landmark,
+  code: Code2,
+  layers: Layers,
+  team: Users,
 };
 
 /**
@@ -50,7 +50,6 @@ function ProfessionalCard({ project }: { project: ProfessionalProject }) {
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <span className="section-eyebrow text-xs">Experiencia profesional</span>
         <h3 className="mt-3 font-display text-h3 font-semibold text-content">
           {project.title}
         </h3>
@@ -87,10 +86,10 @@ function PersonalCard({ project }: { project: PersonalProject }) {
             className="absolute inset-0 flex items-center justify-center gap-3 bg-[rgba(15,110,86,0.88)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-white/60 px-4 py-2 text-sm font-medium text-white">
-              <FiExternalLink aria-hidden="true" /> Ver demo
+              <ExternalLink aria-hidden="true" /> Ver demo
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/60 px-4 py-2 text-sm font-medium text-white">
-              <FiGithub aria-hidden="true" /> Ver código
+              <GithubIcon aria-hidden="true" /> Ver código
             </span>
           </div>
         </div>

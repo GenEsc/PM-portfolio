@@ -1,18 +1,24 @@
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
-import CareerTimeline from "@/components/sections/CareerTimeline";
 import Stack from "@/components/sections/Stack";
 import Projects from "@/components/sections/Projects";
 import ServicesSection from "@/components/sections/ServicesSection";
 import Contact from "@/components/sections/Contact";
+import ScrollStoryPath from "@/components/animation/ScrollStoryPath";
 
-/** Single-page home with anchored sections. */
+/**
+ * Single-page home with anchored sections.
+ *
+ * <main> is the positioning context for ScrollStoryPath — a single full-page
+ * emerald line drawn on scroll that starts below the hero, threads the career
+ * milestones in "Proyectos", and arrives at the green contact section.
+ */
 export default function Home() {
   return (
-    <main>
+    <main className="relative overflow-x-clip">
+      <ScrollStoryPath />
       <Hero />
       <About />
-      <CareerTimeline />
       <Stack />
       <Projects />
       <ServicesSection />

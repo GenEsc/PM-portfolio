@@ -1,16 +1,15 @@
-import type { IconType } from "react-icons";
+import { Plug, Server, Database, RefreshCw } from "lucide-react";
+import type { IconType } from "@/lib/icon";
 import {
-  FaReact,
-  FaAngular,
-  FaHtml5,
-  FaPlug,
-  FaServer,
-  FaDatabase,
-  FaAws,
-  FaArrowsRotate,
-  FaDocker,
-} from "react-icons/fa6";
-import { SiTypescript, SiSpringboot, SiMicrosoftazure } from "react-icons/si";
+  ReactIcon,
+  AngularIcon,
+  Html5Icon,
+  AwsIcon,
+  DockerIcon,
+  TypeScriptIcon,
+  SpringBootIcon,
+  AzureIcon,
+} from "@/components/icons/brand";
 
 export type Tech = {
   name: string;
@@ -31,28 +30,28 @@ export const STACK: StackGroup[] = [
   {
     title: "Frontend",
     items: [
-      { name: "React", icon: FaReact },
-      { name: "Angular", icon: FaAngular },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "HTML / CSS", icon: FaHtml5 },
+      { name: "React", icon: ReactIcon },
+      { name: "Angular", icon: AngularIcon },
+      { name: "TypeScript", icon: TypeScriptIcon },
+      { name: "HTML / CSS", icon: Html5Icon },
     ],
   },
   {
     title: "Backend",
     items: [
-      { name: "Java / Spring Boot", icon: SiSpringboot },
-      { name: "APIs REST", icon: FaPlug },
-      { name: "Microservicios", icon: FaServer },
-      { name: "SQL / NoSQL", icon: FaDatabase },
+      { name: "Java / Spring Boot", icon: SpringBootIcon },
+      { name: "APIs REST", icon: Plug },
+      { name: "Microservicios", icon: Server },
+      { name: "SQL / NoSQL", icon: Database },
     ],
   },
   {
     title: "DevOps",
     items: [
-      { name: "AWS", icon: FaAws },
-      { name: "Azure", icon: SiMicrosoftazure },
-      { name: "CI/CD", icon: FaArrowsRotate },
-      { name: "Docker", icon: FaDocker },
+      { name: "AWS", icon: AwsIcon },
+      { name: "Azure", icon: AzureIcon },
+      { name: "CI/CD", icon: RefreshCw },
+      { name: "Docker", icon: DockerIcon },
     ],
   },
 ];

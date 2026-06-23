@@ -176,6 +176,164 @@ h4 {
 }
 
 /* ------------------------------------------------------------------ */
+/* Storyline origin (components/animation/ScrollStoryPath.tsx)         */
+/* Spinning brand logo + pulsing ring marking where the career path is */
+/* "born". Compositor-only transforms/opacity (cheap, no layout).      */
+/* ------------------------------------------------------------------ */
+@keyframes story-logo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes story-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.story-logo-spin {
+  transform-origin: center;
+  animation: story-logo-spin 4s linear infinite;
+}
+
+.story-pulse-ring {
+  animation: story-pulse-ring 2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-logo-spin {
+    animation: none;
+  }
+  .story-pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Storyline animations: node arrival flash + confluence ripple        */
+/* (the travelling particle is positioned in JS; see ScrollStoryPath). */
+/* ------------------------------------------------------------------ */
+@keyframes story-node-flash {
+  from {
+    opacity: 0.4;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+.story-node-flash {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.story-node-flash.is-flashing {
+  animation: story-node-flash 0.9s ease-out forwards;
+}
+
+@keyframes story-ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(5);
+  }
+}
+
+.story-ripple {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.story-ripple.is-rippling {
+  animation: story-ripple 1.2s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-particle,
+  .story-pulse {
+    display: none;
+  }
+  .story-node-flash,
+  .story-ripple {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Confluence: the storyline floods the contact section green on arrival.    */
+/* ScrollStoryPath adds `.is-confluent` to #contacto once the path reaches it. */
+/* This is a PERMANENT state change (never reverts), driven entirely by CSS    */
+/* off that one class — not a flash/pop. id-specificity beats the utilities.   */
+/* ------------------------------------------------------------------ */
+#contact-glow-overlay {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+#contacto.is-confluent #contact-glow-overlay {
+  opacity: 1;
+}
+
+/* Headings and labels → white. */
+#contacto.is-confluent :is(h2, h3, label) {
+  color: #fff;
+  transition: color 0.8s ease;
+}
+
+/* Body text and links → white-tinted. */
+#contacto.is-confluent :is(p, a) {
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.8s ease;
+}
+
+/* Social/email link chips: white border. */
+#contacto.is-confluent a[aria-label] {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Form fields adapt to the green background. */
+#contacto.is-confluent :is(input, textarea) {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  transition: color 0.8s ease, background-color 0.8s ease, border-color 0.8s ease;
+}
+#contacto.is-confluent :is(input, textarea)::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+#contacto.is-confluent :is(input, textarea):focus {
+  border-color: #fff;
+}
+
+/* Submit button → white with dark-green text. */
+#contacto.is-confluent button[type="submit"] {
+  background-color: #fff;
+  color: #085041;
+  transition: color 0.8s ease, background-color 0.8s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #contact-glow-overlay {
+    transition: none;
+  }
+  #contacto.is-confluent :is(h2, h3, p, a, label, input, textarea, button) {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Utilities                                                           */
 /* ------------------------------------------------------------------ */
 @layer components {

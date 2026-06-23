@@ -9,12 +9,11 @@ export default function Stack() {
   return (
     <section
       id="stack"
-      className="scroll-mt-[70px] bg-surface-secondary py-24 sm:py-28"
+      className="relative z-10 scroll-mt-[70px] py-24 sm:py-28"
     >
       <div className="container-page">
         <AnimateOnScroll>
-          <p className="section-eyebrow">Stack tecnológico</p>
-          <h2 className="mt-3 font-display text-h2-mobile font-bold text-content sm:text-h2">
+          <h2 className="font-display text-h2-mobile font-bold text-content sm:text-h2">
             Las herramientas con las que trabajo
           </h2>
         </AnimateOnScroll>
