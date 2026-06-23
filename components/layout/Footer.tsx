@@ -1,4 +1,4 @@
-import { GithubIcon, LinkedinIcon } from "@/components/icons/brand";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/animated";
 import Logo from "./Logo";
 import { SITE } from "@/lib/data/site";
 
@@ -25,7 +25,7 @@ export default function Footer() {
             aria-label="LinkedIn"
             className="text-content-muted transition-colors hover:text-accent"
           >
-            <LinkedinIcon aria-hidden="true" className="h-5 w-5" />
+            <LinkedinIcon size={20} aria-hidden="true" className="inline-flex" />
           </a>
           <a
             href={SITE.github}
@@ -34,7 +34,7 @@ export default function Footer() {
             aria-label="GitHub"
             className="text-content-muted transition-colors hover:text-accent"
           >
-            <GithubIcon aria-hidden="true" className="h-5 w-5" />
+            <GithubIcon size={20} aria-hidden="true" className="inline-flex" />
           </a>
         </div>
       </div>

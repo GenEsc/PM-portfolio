@@ -15,6 +15,7 @@
   --accent: #1d9e75; /* verde esmeralda */
   --accent-hover: #0f6e56; /* verde oscuro */
   --accent-soft: #e1f5ee; /* verde muy claro */
+  --accent-deep: #085041; /* verde muy oscuro — flood del botón primario */
 
   /* Monospace for code/stack labels. Kept as a system stack so the site loads
      only two web fonts (Fraunces + Inter), per the "max 2 fonts" rule. */
@@ -31,6 +32,7 @@
   --accent: #1d9e75;
   --accent-hover: #0f6e56;
   --accent-soft: #0f2a22;
+  --accent-deep: #085041;
 }
 
 /* ------------------------------------------------------------------ */

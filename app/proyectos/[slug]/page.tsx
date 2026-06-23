@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { GithubIcon } from "@/components/icons/brand";
+import { GithubIcon } from "@/components/icons/animated";
+import PrimaryButton from "@/components/ui/PrimaryButton";
+import SecondaryButton from "@/components/ui/SecondaryButton";
 import { PROJECTS, getProjectBySlug } from "@/lib/data/projects";
 import { SITE } from "@/lib/data/site";
 
@@ -111,22 +113,20 @@ export default function ProjectDetailPage({ params }: { params: Params }) {
             </ul>
 
             <div className="mt-8 flex flex-col gap-3">
-              <a
+              <PrimaryButton
                 href={project.demoUrl}
                 target={project.demoUrl === "#" ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="btn-primary"
               >
                 <ExternalLink aria-hidden="true" /> Ver demo
-              </a>
-              <a
+              </PrimaryButton>
+              <SecondaryButton
                 href={project.codeUrl}
                 target={project.codeUrl === "#" ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="btn-secondary"
               >
-                <GithubIcon aria-hidden="true" /> Ver código
-              </a>
+                <GithubIcon size={18} aria-hidden="true" className="inline-flex" /> Ver código
+              </SecondaryButton>
             </div>
           </aside>
         </div>

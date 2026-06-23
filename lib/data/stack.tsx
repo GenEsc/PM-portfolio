@@ -1,19 +1,25 @@
-import { Plug, Server, Database, RefreshCw } from "lucide-react";
-import type { IconType } from "@/lib/icon";
 import {
-  ReactIcon,
-  AngularIcon,
-  Html5Icon,
-  AwsIcon,
-  DockerIcon,
-  TypeScriptIcon,
-  SpringBootIcon,
-  AzureIcon,
-} from "@/components/icons/brand";
+  ReactLogo,
+  AngularLogo,
+  TypeScriptLogo,
+  Html5Logo,
+  Css3Logo,
+  JavaLogo,
+  SpringLogo,
+  PostgresLogo,
+  MongoLogo,
+  AwsLogo,
+  AzureLogo,
+  DockerLogo,
+  GitLogo,
+} from "@/components/icons/brand-logos";
+import type { BrandIcon, TechAnimation } from "@/components/sections/TechIcon";
 
 export type Tech = {
   name: string;
-  icon: IconType;
+  icon: BrandIcon;
+  /** Hover animation style (see TechIcon). */
+  animation: TechAnimation;
 };
 
 export type StackGroup = {
@@ -22,36 +28,39 @@ export type StackGroup = {
 };
 
 /**
- * Technology stack, grouped in three columns.
- * 12 technologies in total — kept in sync with the "12 tecnologías" counter.
- * No proficiency bars by design: just icon + name.
+ * Technology stack, grouped in three columns. Logos come from `developer-icons`
+ * (official brand colours — not recoloured, per the library's MIT terms) and
+ * animate on hover via Motion; the animation style per tech is chosen to suit
+ * its logo (see change-animated-icons.md). 13 technologies in total — kept in
+ * sync with the "13 tecnologías" counter in lib/data/site.ts.
  */
 export const STACK: StackGroup[] = [
   {
     title: "Frontend",
     items: [
-      { name: "React", icon: ReactIcon },
-      { name: "Angular", icon: AngularIcon },
-      { name: "TypeScript", icon: TypeScriptIcon },
-      { name: "HTML / CSS", icon: Html5Icon },
+      { name: "React", icon: ReactLogo, animation: "spin" },
+      { name: "Angular", icon: AngularLogo, animation: "spin" },
+      { name: "TypeScript", icon: TypeScriptLogo, animation: "pulse" },
+      { name: "HTML", icon: Html5Logo, animation: "bounce" },
+      { name: "CSS", icon: Css3Logo, animation: "bounce" },
     ],
   },
   {
     title: "Backend",
     items: [
-      { name: "Java / Spring Boot", icon: SpringBootIcon },
-      { name: "APIs REST", icon: Plug },
-      { name: "Microservicios", icon: Server },
-      { name: "SQL / NoSQL", icon: Database },
+      { name: "Java", icon: JavaLogo, animation: "bounce" },
+      { name: "Spring Boot", icon: SpringLogo, animation: "bounce" },
+      { name: "SQL", icon: PostgresLogo, animation: "bounce" },
+      { name: "NoSQL", icon: MongoLogo, animation: "bounce" },
     ],
   },
   {
-    title: "DevOps",
+    title: "DevOps & Cloud",
     items: [
-      { name: "AWS", icon: AwsIcon },
-      { name: "Azure", icon: AzureIcon },
-      { name: "CI/CD", icon: RefreshCw },
-      { name: "Docker", icon: DockerIcon },
+      { name: "AWS", icon: AwsLogo, animation: "pulse" },
+      { name: "Azure", icon: AzureLogo, animation: "pulse" },
+      { name: "Docker", icon: DockerLogo, animation: "bounce" },
+      { name: "Git", icon: GitLogo, animation: "shake" },
     ],
   },
 ];

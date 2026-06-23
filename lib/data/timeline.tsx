@@ -1,5 +1,23 @@
-import { Code2, Landmark, Users } from "lucide-react";
-import type { IconType } from "@/lib/icon";
+import { FolderCodeIcon, CreditCardIcon, UsersIcon } from "lucide-animated";
+import type {
+  ForwardRefExoticComponent,
+  HTMLAttributes,
+  RefAttributes,
+} from "react";
+import type { AnimatedIconHandle } from "@/components/icons/animated";
+
+/**
+ * A lucide-animated icon component: a coloured-by-currentColor SVG that can
+ * animate on hover or, via its ref handle, be triggered programmatically — the
+ * career-timeline nodes fire `startAnimation()` when the scroll path reaches
+ * them (see ScrollStoryPath).
+ */
+export type AnimatedIcon = ForwardRefExoticComponent<
+  HTMLAttributes<HTMLDivElement> & {
+    size?: number;
+    animateOnHover?: boolean;
+  } & RefAttributes<AnimatedIconHandle>
+>;
 
 /**
  * Career milestones shown as nodes along the scroll storyline (oldest →
@@ -21,8 +39,8 @@ export type Milestone = {
   role: string;
   /** One-paragraph factual summary of the position (node body). */
   summary: string;
-  /** Generic, brand-neutral icon (no company logos). */
-  icon: IconType;
+  /** Generic, brand-neutral animated icon (no company logos). */
+  icon: AnimatedIcon;
 };
 
 // Chronological order (oldest → current): Dedalus → BBVA → Verti.
@@ -33,7 +51,7 @@ export const MILESTONES: Milestone[] = [
     role: "Full Stack Developer",
     summary:
       "Primeros años como desarrollador full stack en Java: implementación de funcionalidades de backend y frontend, resolución de incidencias y mantenimiento de aplicaciones en producción.",
-    icon: Code2,
+    icon: FolderCodeIcon,
   },
   {
     company: "BBVA",
@@ -41,7 +59,7 @@ export const MILESTONES: Milestone[] = [
     role: "Full Stack Developer · Plataforma de pagos",
     summary:
       "Evolución de la plataforma de pagos digitales del banco (Openpay → WipÖp), la nueva solución de pagos para pymes y autónomos en España.",
-    icon: Landmark,
+    icon: CreditCardIcon,
   },
   {
     company: "Verti",
@@ -49,6 +67,6 @@ export const MILESTONES: Milestone[] = [
     role: "Tech Lead",
     summary:
       "Liderazgo de un equipo de 6 desarrolladores frontend: decisiones de arquitectura, code reviews, definición del roadmap técnico y relación con producto.",
-    icon: Users,
+    icon: UsersIcon,
   },
 ];

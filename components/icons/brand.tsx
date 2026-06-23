@@ -10,8 +10,9 @@ import type { IconType } from "@/lib/icon";
  * component here costs only its own path, so the dev bundle stays small while
  * the logos look identical. See change-career-timeline.md / next.config.js.
  *
- * Filled logos use `fill="currentColor"`; the outline social marks (GitHub,
- * LinkedIn) use the Feather stroke style. Size via a `className` (e.g. h-6 w-6).
+ * Filled logos use `fill="currentColor"`; size via a `className` (e.g. h-6 w-6).
+ * Social marks (GitHub, LinkedIn) now come animated from `lucide-animated` (see
+ * components/icons/animated.tsx / change-animated-icons.md).
  */
 
 export const ReactIcon: IconType = (props) => (
@@ -65,39 +66,5 @@ export const SpringBootIcon: IconType = (props) => (
 export const AzureIcon: IconType = (props) => (
   <svg fill="currentColor" role="img" viewBox="0 0 24 24" height="1em" width="1em" {...props}>
     <path d="M22.379 23.343a1.62 1.62 0 0 0 1.536-2.14v.002L17.35 1.76A1.62 1.62 0 0 0 15.816.657H8.184A1.62 1.62 0 0 0 6.65 1.76L.086 21.204a1.62 1.62 0 0 0 1.536 2.139h4.741a1.62 1.62 0 0 0 1.535-1.103l.977-2.892 4.947 3.675c.28.208.618.32.966.32m-3.084-12.531 3.624 10.739a.54.54 0 0 1-.51.713v-.001h-.03a.54.54 0 0 1-.322-.106l-9.287-6.9h4.853m6.313 7.006c.116-.326.13-.694.007-1.058L9.79 1.76a1.722 1.722 0 0 0-.007-.02h6.034a.54.54 0 0 1 .512.366l6.562 19.445a.54.54 0 0 1-.338.684" />
-  </svg>
-);
-
-export const GithubIcon: IconType = (props) => (
-  <svg
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    viewBox="0 0 24 24"
-    height="1em"
-    width="1em"
-    {...props}
-  >
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-  </svg>
-);
-
-export const LinkedinIcon: IconType = (props) => (
-  <svg
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    viewBox="0 0 24 24"
-    height="1em"
-    width="1em"
-    {...props}
-  >
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect x="2" y="9" width="4" height="12" />
-    <circle cx="4" cy="4" r="2" />
   </svg>
 );

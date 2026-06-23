@@ -1,28 +1,35 @@
-import { Code, RefreshCw, ShoppingCart } from "lucide-react";
-import type { IconType } from "@/lib/icon";
+import type { ComponentType } from "react";
+import {
+  TerminalIcon,
+  RefreshCwIcon,
+  CartIcon,
+} from "@/components/icons/animated";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 
+/** Animated icon component (lucide-animated): animates on hover by default. */
+type ServiceIcon = ComponentType<{ size?: number; className?: string }>;
+
 type Service = {
-  icon: IconType;
+  icon: ServiceIcon;
   title: string;
   description: string;
 };
 
 const SERVICES: Service[] = [
   {
-    icon: Code,
+    icon: TerminalIcon,
     title: "Desarrollo web desde cero",
     description:
       "Aplicaciones web completas, desde el diseño hasta el despliegue en producción.",
   },
   {
-    icon: RefreshCw,
+    icon: RefreshCwIcon,
     title: "Modernización de web existente",
     description:
       "Rediseño, optimización de rendimiento y actualización de tecnología.",
   },
   {
-    icon: ShoppingCart,
+    icon: CartIcon,
     title: "E-commerce",
     description:
       "Tiendas online con gestión de productos, carrito y pasarela de pago integrada.",
@@ -48,9 +55,9 @@ export default function ServicesSection() {
             const Icon = service.icon;
             return (
               <AnimateOnScroll key={service.title} delay={i * 50}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
+                <div className="group flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent dark:bg-surface-secondary">
-                    <Icon className="h-6 w-6" aria-hidden="true" />
+                    <Icon size={24} className="text-accent" />
                   </span>
                   <h3 className="mt-5 font-display text-h3 font-semibold text-content">
                     {service.title}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Landmark, Code2, Layers, Users } from "lucide-react";
-import { GithubIcon } from "@/components/icons/brand";
+import { GithubIcon } from "@/components/icons/animated";
 import type { IconType } from "@/lib/icon";
 import type {
   Project,
@@ -89,7 +89,7 @@ function PersonalCard({ project }: { project: PersonalProject }) {
               <ExternalLink aria-hidden="true" /> Ver demo
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/60 px-4 py-2 text-sm font-medium text-white">
-              <GithubIcon aria-hidden="true" /> Ver código
+              <GithubIcon size={16} aria-hidden="true" className="inline-flex" /> Ver código
             </span>
           </div>
         </div>

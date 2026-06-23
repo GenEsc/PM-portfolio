@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { MILESTONES } from "@/lib/data/timeline";
+import type { AnimatedIconHandle } from "@/components/icons/animated";
 import Logo from "@/components/layout/Logo";
 
 /**
@@ -84,6 +85,7 @@ export default function ScrollStoryPath() {
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const flashRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const iconRefs = useRef<(AnimatedIconHandle | null)[]>([]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -240,6 +242,8 @@ export default function ScrollStoryPath() {
         if (y >= nodeY[i] && !flashed[i]) {
           flashed[i] = true;
           flashRefs.current[i]?.classList.add("is-flashing");
+          // Fire the node's animated icon once, in sync with the flash.
+          if (!reduceMotion) iconRefs.current[i]?.startAnimation();
         }
       }
 
@@ -497,7 +501,9 @@ export default function ScrollStoryPath() {
           </span>
         </div>
 
-        {MILESTONES.map((m, i) => (
+        {MILESTONES.map((m, i) => {
+          const Icon = m.icon;
+          return (
           <div
             key={m.company}
             ref={(el) => {
@@ -524,19 +530,32 @@ export default function ScrollStoryPath() {
               className="absolute top-1/2 w-56 -translate-y-1/2 rounded-xl border border-line bg-surface/95 p-4 shadow-md backdrop-blur sm:w-64"
               style={{ left: "22px" }}
             >
-              <p className="font-display text-sm font-bold leading-tight text-content">
-                {m.company}{" "}
-                <span className="font-semibold text-content-muted">
-                  · {m.year}
-                </span>
-              </p>
+              <div className="flex items-center gap-2">
+                {/* Animated milestone icon — fired once when the node flashes
+                    in (see iconRefs.startAnimation in apply). */}
+                <Icon
+                  ref={(el) => {
+                    iconRefs.current[i] = el;
+                  }}
+                  size={20}
+                  animateOnHover={false}
+                  className="shrink-0 text-accent"
+                />
+                <p className="font-display text-sm font-bold leading-tight text-content">
+                  {m.company}{" "}
+                  <span className="font-semibold text-content-muted">
+                    · {m.year}
+                  </span>
+                </p>
+              </div>
               <p className="mt-1 text-xs font-semibold text-accent">{m.role}</p>
               <p className="mt-1.5 text-xs leading-snug text-content-muted">
                 {m.summary}
               </p>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {/* Animation 1 — travelling particle riding the drawn tip: a solid core
             plus a larger, fainter halo (no CSS blur). Positioned each frame. */}

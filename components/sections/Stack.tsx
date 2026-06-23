@@ -1,9 +1,11 @@
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
+import TechIcon from "@/components/sections/TechIcon";
 import { STACK } from "@/lib/data/stack";
 
 /**
  * Technology stack, grouped in three columns (Frontend / Backend / DevOps).
- * Icons + names only — no proficiency bars, by design.
+ * Icons + names only — no proficiency bars, by design. Each logo animates on
+ * hover (see TechIcon).
  */
 export default function Stack() {
   return (
@@ -26,20 +28,14 @@ export default function Stack() {
                   {group.title}
                 </h3>
                 <ul className="mt-6 space-y-4">
-                  {group.items.map((tech) => {
-                    const Icon = tech.icon;
-                    return (
-                      <li
-                        key={tech.name}
-                        className="flex items-center gap-3 text-content"
-                      >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-soft text-accent dark:bg-surface">
-                          <Icon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                        <span className="font-mono text-sm">{tech.name}</span>
-                      </li>
-                    );
-                  })}
+                  {group.items.map((tech) => (
+                    <TechIcon
+                      key={tech.name}
+                      icon={tech.icon}
+                      name={tech.name}
+                      animation={tech.animation}
+                    />
+                  ))}
                 </ul>
               </div>
             </AnimateOnScroll>

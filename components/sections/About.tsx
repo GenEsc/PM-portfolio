@@ -1,5 +1,6 @@
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import Counter from "@/components/animation/Counter";
+import CompanyTicker from "@/components/animation/CompanyTicker";
 import { STATS } from "@/lib/data/site";
 
 /**
@@ -24,8 +25,8 @@ export default function About() {
             <div className="mt-6 space-y-4 text-lg text-content-muted">
               <p>
                 Llevo 5 años desarrollando aplicaciones web-app en entornos
-                empreses líderes en su sector, con empresas como <strong className="text-content">BBVA</strong> y{" "}
-                <strong className="text-content">VERTI</strong>. Hoy lidero como{" "}
+                empresas líderes en su sector, con empresas como{" "}
+                <CompanyTicker />. Hoy lidero como{" "}
                 <strong className="text-content">Tech Lead</strong> un equipo de seis
                 desarrolladores frontend.
               </p>
