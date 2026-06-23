@@ -13,15 +13,38 @@ How to add a project, update personal data and deploy a new version.
 ## Add a new project to the portfolio
 
 Projects are data-driven from [`lib/data/projects.ts`](../lib/data/projects.ts). Adding one
-requires **no component changes**.
+requires **no component changes**. There are two kinds of entry (`kind`):
+
+- **`professional`** — real career experience. Shown as an informational card:
+  a generic icon + the company name as **styled text** (never a real logo —
+  trademark-safe) + a short factual description. No tech chips, no demo/code
+  links, no detail page.
+- **`personal`** — demo/repo projects. Clickable card with a screenshot, tech
+  chips and a hover overlay, linking to a detail page at `/proyectos/<slug>`.
+
+**Add a professional experience card:**
+
+```ts
+{
+  kind: "professional",
+  slug: "my-role",                 // unique id (not a public URL)
+  company: "Company",              // styled text only — never a logo
+  icon: "bank",                    // "bank" | "code" | "layers" | "team"
+  title: "Role / project title",
+  description: "A short, factual description of the stage.",
+},
+```
+
+**Add a personal/demo project:**
 
 1. **(Optional) Add a screenshot** to `public/projects/`, e.g.
    `public/projects/my-shop.png` (16:10 looks best on the cards).
 
-2. **Append an entry** to the `PROJECTS` array in `lib/data/projects.ts`:
+2. **Append an entry** to the `PROJECTS` array:
 
    ```ts
    {
+     kind: "personal",
      slug: "my-shop",                       // unique; becomes /proyectos/my-shop
      title: "My Shop",
      summary: "One-line summary for the card.",
@@ -38,12 +61,11 @@ requires **no component changes**.
    },
    ```
 
-3. That's it. The card appears in the Projects section, the detail page at
-   `/proyectos/my-shop` is generated (via `generateStaticParams`), and the
-   sitemap updates automatically.
+   The card appears in the Projects section, the detail page is generated (via
+   `generateStaticParams`), and the sitemap updates automatically.
 
-> The card grid is `md:grid-cols-2`. With 3+ projects it simply wraps; no layout
-> change needed.
+> The card grid is `md:grid-cols-2` (comfortably fits up to 4 cards). With more
+> it simply wraps; no layout change needed.
 
 ---
 

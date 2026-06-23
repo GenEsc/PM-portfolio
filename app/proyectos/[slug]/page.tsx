@@ -2,15 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FiArrowLeft, FiExternalLink, FiGithub } from "react-icons/fi";
+import { ArrowLeft, ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons/brand";
 import { PROJECTS, getProjectBySlug } from "@/lib/data/projects";
 import { SITE } from "@/lib/data/site";
 
 type Params = { slug: string };
 
-/** Pre-render a static page for every project at build time. */
+/** Pre-render a static page for every personal project at build time.
+ *  Professional-experience entries are not clickable and have no detail page. */
 export function generateStaticParams(): Params[] {
-  return PROJECTS.map((project) => ({ slug: project.slug }));
+  return PROJECTS.filter((project) => project.kind === "personal").map(
+    (project) => ({ slug: project.slug })
+  );
 }
 
 export function generateMetadata({
@@ -19,7 +23,8 @@ export function generateMetadata({
   params: Params;
 }): Metadata {
   const project = getProjectBySlug(params.slug);
-  if (!project) return { title: "Proyecto no encontrado" };
+  if (project?.kind !== "personal")
+    return { title: "Proyecto no encontrado" };
 
   const title = `${project.title} — ${SITE.shortName}`;
   return {
@@ -37,7 +42,8 @@ export function generateMetadata({
 
 export default function ProjectDetailPage({ params }: { params: Params }) {
   const project = getProjectBySlug(params.slug);
-  if (!project) notFound();
+  // Only personal projects have a detail page; professional entries 404.
+  if (project?.kind !== "personal") notFound();
 
   return (
     <main className="container-page py-28">
@@ -45,7 +51,7 @@ export default function ProjectDetailPage({ params }: { params: Params }) {
         href="/#proyectos"
         className="inline-flex items-center gap-2 text-sm font-medium text-content-muted transition-colors hover:text-accent"
       >
-        <FiArrowLeft aria-hidden="true" /> Volver a proyectos
+        <ArrowLeft aria-hidden="true" /> Volver a proyectos
       </Link>
 
       <article className="mt-8">
@@ -111,7 +117,7 @@ export default function ProjectDetailPage({ params }: { params: Params }) {
                 rel="noopener noreferrer"
                 className="btn-primary"
               >
-                <FiExternalLink aria-hidden="true" /> Ver demo
+                <ExternalLink aria-hidden="true" /> Ver demo
               </a>
               <a
                 href={project.codeUrl}
@@ -119,7 +125,7 @@ export default function ProjectDetailPage({ params }: { params: Params }) {
                 rel="noopener noreferrer"
                 className="btn-secondary"
               >
-                <FiGithub aria-hidden="true" /> Ver código
+                <GithubIcon aria-hidden="true" /> Ver código
               </a>
             </div>
           </aside>

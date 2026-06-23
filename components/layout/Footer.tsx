@@ -1,4 +1,4 @@
-import { FiGithub, FiLinkedin } from "react-icons/fi";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/brand";
 import Logo from "./Logo";
 import { SITE } from "@/lib/data/site";
 
@@ -25,7 +25,7 @@ export default function Footer() {
             aria-label="LinkedIn"
             className="text-content-muted transition-colors hover:text-accent"
           >
-            <FiLinkedin aria-hidden="true" className="h-5 w-5" />
+            <LinkedinIcon aria-hidden="true" className="h-5 w-5" />
           </a>
           <a
             href={SITE.github}
@@ -34,7 +34,7 @@ export default function Footer() {
             aria-label="GitHub"
             className="text-content-muted transition-colors hover:text-accent"
           >
-            <FiGithub aria-hidden="true" className="h-5 w-5" />
+            <GithubIcon aria-hidden="true" className="h-5 w-5" />
           </a>
         </div>
       </div>

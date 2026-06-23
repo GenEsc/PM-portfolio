@@ -1,5 +1,5 @@
-import { FiCode, FiRefreshCw, FiShoppingCart } from "react-icons/fi";
-import type { IconType } from "react-icons";
+import { Code, RefreshCw, ShoppingCart } from "lucide-react";
+import type { IconType } from "@/lib/icon";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 
 type Service = {
@@ -10,19 +10,19 @@ type Service = {
 
 const SERVICES: Service[] = [
   {
-    icon: FiCode,
+    icon: Code,
     title: "Desarrollo web desde cero",
     description:
       "Aplicaciones web completas, desde el diseño hasta el despliegue en producción.",
   },
   {
-    icon: FiRefreshCw,
+    icon: RefreshCw,
     title: "Modernización de web existente",
     description:
       "Rediseño, optimización de rendimiento y actualización de tecnología.",
   },
   {
-    icon: FiShoppingCart,
+    icon: ShoppingCart,
     title: "E-commerce",
     description:
       "Tiendas online con gestión de productos, carrito y pasarela de pago integrada.",
@@ -34,12 +34,11 @@ export default function ServicesSection() {
   return (
     <section
       id="servicios"
-      className="scroll-mt-[70px] bg-surface-secondary py-24 sm:py-28"
+      className="relative z-10 scroll-mt-[70px] pt-24 pb-56 sm:pt-28 sm:pb-64"
     >
       <div className="container-page">
         <AnimateOnScroll>
-          <p className="section-eyebrow">Servicios</p>
-          <h2 className="mt-3 font-display text-h2-mobile font-bold text-content sm:text-h2">
+          <h2 className="font-display text-h2-mobile font-bold text-content sm:text-h2">
             Cómo puedo ayudarte
           </h2>
         </AnimateOnScroll>
@@ -59,12 +58,6 @@ export default function ServicesSection() {
                   <p className="mt-3 flex-1 text-content-muted">
                     {service.description}
                   </p>
-                  <a
-                    href="#contacto"
-                    className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
-                  >
-                    Solicitar presupuesto →
-                  </a>
                 </div>
               </AnimateOnScroll>
             );

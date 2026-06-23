@@ -1,6 +1,6 @@
 "use client";
 
-import { FiMoon, FiSun } from "react-icons/fi";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 /**
@@ -21,9 +21,9 @@ export default function ThemeToggle() {
       className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       {isDark ? (
-        <FiSun className="h-5 w-5" aria-hidden="true" />
+        <Sun className="h-5 w-5" aria-hidden="true" />
       ) : (
-        <FiMoon className="h-5 w-5" aria-hidden="true" />
+        <Moon className="h-5 w-5" aria-hidden="true" />
       )}
     </button>
   );

@@ -67,20 +67,22 @@ All section components are **Server** components and take **no props** (they rea
 content from `lib/`). They render a semantic `<section>` with the id used by the
 navbar anchors.
 
-| Component         | Id          | Purpose                                            |
-| ----------------- | ----------- | -------------------------------------------------- |
-| `Hero` (Client)   | `inicio`    | Name, tagline, availability badge, CTAs, parallax. |
-| `About`           | `sobre-mi`  | Client-oriented intro + animated counters.         |
-| `Stack`           | `stack`     | Technology icons grid (3 columns).                 |
-| `Projects`        | `proyectos` | Grid of `ProjectCard`s.                            |
-| `ServicesSection` | `servicios` | Three service cards, each with a CTA.              |
-| `Contact`         | `contacto`  | Heading, `ContactForm`, email & social links.      |
+| Component               | Id            | Purpose                                            |
+| ----------------------- | ------------- | -------------------------------------------------- |
+| `Hero` (Client)         | `inicio`      | Name, tagline, availability badge, CTAs, parallax. |
+| `About`                 | `sobre-mi`    | Client-oriented intro + animated counters.         |
+| `CareerTimeline` (Client) | `trayectoria` | Scroll-drawn career path + milestone cards. See [ANIMATIONS.md](./ANIMATIONS.md) §6. |
+| `Stack`                 | `stack`       | Technology icons grid (3 columns).                 |
+| `Projects`              | `proyectos`   | Grid of `ProjectCard`s.                            |
+| `ServicesSection`       | `servicios`   | Three service cards, each with a CTA.              |
+| `Contact`               | `contacto`    | Green "arrival" block: heading, `ContactForm`, email & social links. |
 
 ```tsx
 // app/page.tsx
 <main>
   <Hero />
   <About />
+  <CareerTimeline />
   <Stack />
   <Projects />
   <ServicesSection />
@@ -88,18 +90,24 @@ navbar anchors.
 </main>
 ```
 
+> `CareerTimeline` is a **Client** component (it drives the scroll-draw) and is
+> not in `NAV_LINKS`, so the navbar/active-section logic is unaffected.
+
 ---
 
 ## Projects
 
-### `ProjectCard` — Server
+Renders one of two card kinds based on `project.kind`:
 
-Card with hover overlay (dark-green, fades in, reveals "Ver demo" / "Ver código")
-and a `scale(1.02)` lift. The whole card links to the detail page.
+- **`professional`** — informational card: generic icon + company name as styled
+  text (never a logo) + description. Not clickable; no tech chips or overlay.
+- **`personal`** — clickable card with a screenshot, tech chips, a dark-green
+  hover overlay ("Ver demo" / "Ver código") and a `scale(1.02)` lift; links to
+  the detail page.
 
 | Prop      | Type      | Description                          |
 | --------- | --------- | ------------------------------------ |
-| `project` | `Project` | A project from `lib/data/projects.ts`.    |
+| `project` | `Project` | A project from `lib/data/projects.ts` (`ProfessionalProject \| PersonalProject`). |
 
 ```tsx
 <ProjectCard project={PROJECTS[0]} />
@@ -112,7 +120,11 @@ and a `scale(1.02)` lift. The whole card links to the detail page.
 ### `ContactForm` — Client
 
 Name / email / message form with client-side validation. On valid submit it
-POSTs JSON to `/api/contact`. Shows success/error states. No props.
+POSTs JSON to `/api/contact`. Shows success/error states.
+
+| Prop       | Type      | Default | Description                                                        |
+| ---------- | --------- | ------- | ------------------------------------------------------------------ |
+| `onAccent` | `boolean` | `false` | Switches to a light-on-emerald palette for the green contact block. |
 
 ---
 
@@ -151,10 +163,8 @@ Counts from 0 to `value` once visible, with `easeOutCubic`.
 <Counter value={4} delay={200} />
 ```
 
-### `ScrollPath` — Client
-
-Fixed background SVG path drawn via `stroke-dashoffset`, lerped toward the scroll
-target each frame. No props. Rendered once in `app/layout.tsx`.
+> The scroll-drawn path now lives in the `CareerTimeline` **section** (not a
+> separate background primitive). See [ANIMATIONS.md](./ANIMATIONS.md) §6.
 
 ### `SmoothScroll` — Client
 

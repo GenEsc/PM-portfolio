@@ -1,15 +1,43 @@
 /**
  * Portfolio projects.
  *
- * These are placeholders for v1 — replace the content with real projects.
- * To add a project, append an entry here and (optionally) drop a screenshot
- * in /public/projects/. See docs/CONTRIBUTING.md for the full guide.
+ * Two kinds of entry:
+ *  - "professional": real career experience. Rendered as an informational card
+ *    (generic icon + company name as styled text — never a real logo — + a short
+ *    factual description). No tech tags, no demo/code links, no detail page.
+ *  - "personal": demo/repo projects. Rendered as a clickable card with a
+ *    screenshot, tech chips and a hover overlay, linking to a detail page.
+ *
+ * Launch (v1) shows only the professional cards. Personal demo projects will be
+ * appended later as "personal" entries. See docs/CONTRIBUTING.md.
  */
 
-export type Project = {
+/** Generic, brand-neutral icon keys (no company logos — trademark-safe). */
+export type ProjectIcon = "bank" | "code" | "layers" | "team";
+
+type BaseProject = {
   slug: string;
   title: string;
-  /** One-line summary shown on the card. */
+};
+
+/**
+ * Professional experience entry. The company name is shown as plain styled text
+ * (trademark-safe), paired with a generic neutral icon.
+ */
+export type ProfessionalProject = BaseProject & {
+  kind: "professional";
+  /** Company name shown as styled text (never a logo). */
+  company: string;
+  /** Generic neutral icon key. */
+  icon: ProjectIcon;
+  /** Short, factual description shown on the card. */
+  description: string;
+};
+
+/** Personal/demo project with a detail page, tech chips and demo/code links. */
+export type PersonalProject = BaseProject & {
+  kind: "personal";
+  /** One-line summary shown on the card and used for SEO. */
   summary: string;
   /** The business problem the project solves. */
   problem: string;
@@ -17,54 +45,36 @@ export type Project = {
   description: string;
   /** Technologies used, shown as monospace chips. */
   tech: string[];
-  /** Path to the screenshot under /public (placeholder until real assets). */
+  /** Path to the screenshot under /public. */
   image: string;
-  /** Live demo URL ("#" while it is a placeholder). */
+  /** Live demo URL ("#" while unavailable). */
   demoUrl: string;
-  /** Source code URL ("#" while it is a placeholder). */
+  /** Source code URL ("#" while unavailable). */
   codeUrl: string;
   /** Bullet points for the "what was done" list on the detail page. */
   highlights: string[];
 };
 
+export type Project = ProfessionalProject | PersonalProject;
+
 export const PROJECTS: Project[] = [
   {
-    slug: "ecommerce-placeholder",
-    title: "E-commerce [nombre del negocio]",
-    summary: "Plataforma de venta online con pasarela de pago.",
-    problem:
-      "El negocio vendía solo en tienda física y perdía clientes que querían comprar online.",
+    kind: "professional",
+    slug: "bbva-wipop",
+    company: "BBVA",
+    icon: "bank",
+    title: "Modernización de plataforma de pagos (BBVA → Openpay → WipÖp)",
     description:
-      "Tienda online completa con catálogo de productos, carrito, checkout y pasarela de pago integrada. Pensada para escalar con el crecimiento del negocio y fácil de gestionar para el propietario.",
-    tech: ["Next.js", "TypeScript", "Stripe", "Tailwind CSS", "PostgreSQL"],
-    image: "/projects/placeholder-ecommerce.svg",
-    demoUrl: "#",
-    codeUrl: "#",
-    highlights: [
-      "Catálogo de productos con búsqueda y filtros",
-      "Carrito persistente y checkout en varios pasos",
-      "Pasarela de pago segura integrada",
-      "Panel de gestión de pedidos para el propietario",
-    ],
+      "Participación en la evolución de la plataforma de pagos digitales de BBVA, construida sobre la tecnología de Openpay y dando lugar a WipÖp, la nueva solución de pagos del banco para pymes y autónomos en España.",
   },
   {
-    slug: "modernizacion-placeholder",
-    title: "Modernización web [nombre del negocio]",
-    summary: "Rediseño y optimización de una web existente anticuada.",
-    problem:
-      "La web tenía un diseño desfasado, cargaba lento y no funcionaba bien en móvil, perjudicando la imagen del negocio.",
+    kind: "professional",
+    slug: "verti-tech-lead",
+    company: "Verti",
+    icon: "team",
+    title: "Liderazgo técnico y referente del equipo",
     description:
-      "Rediseño completo de una web existente: nueva identidad visual, mejora drástica del rendimiento, accesibilidad y SEO, y migración a un stack moderno y mantenible.",
-    tech: ["React", "TypeScript", "Tailwind CSS", "Vite", "Lighthouse"],
-    image: "/projects/placeholder-modernizacion.svg",
-    demoUrl: "#",
-    codeUrl: "#",
-    highlights: [
-      "Rediseño visual moderno y responsive",
-      "Mejora del rendimiento y de las métricas Core Web Vitals",
-      "Optimización SEO técnica y de contenidos",
-      "Migración a un stack moderno y mantenible",
-    ],
+      "Rol actual como Tech Lead en Verti, liderando un equipo de 6 desarrolladores frontend. Responsable de decisiones de arquitectura, code reviews, definición de roadmap técnico y relación con producto.",
   },
 ];
 

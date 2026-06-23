@@ -1,16 +1,34 @@
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/brand";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import ContactForm from "./ContactForm";
 import { SITE } from "@/lib/data/site";
 
-/** "Contacto" section: heading, form, visible email and social links. */
+/**
+ * "Contacto" section: heading, form, visible email and social links.
+ *
+ * This is where the career storyline "arrives". The section starts NEUTRAL; when
+ * the scroll path reaches it, ScrollStoryPath adds `.is-confluent`, which fades
+ * in the green overlay below and flips all the text/form to white — a permanent
+ * "confluence" (see change-storyline-animations-fix.md and the `.is-confluent`
+ * rules in globals.css). The colour change is CSS-driven off that one class.
+ */
 export default function Contact() {
   return (
-    <section id="contacto" className="scroll-mt-[70px] py-24 sm:py-28">
-      <div className="container-page grid gap-12 md:grid-cols-2 md:gap-16">
+    <section
+      id="contacto"
+      className="relative z-10 scroll-mt-[70px] overflow-hidden bg-surface-secondary py-24 sm:py-28"
+    >
+      {/* Confluence flood: emerald overlay, hidden until `.is-confluent`. */}
+      <div
+        id="contact-glow-overlay"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-accent to-accent-hover"
+      />
+
+      <div className="container-page relative z-10 grid gap-12 md:grid-cols-2 md:gap-16">
         <AnimateOnScroll>
-          <p className="section-eyebrow">Contacto</p>
-          <h2 className="mt-3 font-display text-h2-mobile font-bold text-content sm:text-h2">
+          <h2 className="font-display text-h2-mobile font-bold text-content sm:text-h2">
             ¿Tienes un proyecto en mente? Hablemos.
           </h2>
           <p className="mt-4 text-lg text-content-muted">
@@ -22,7 +40,7 @@ export default function Contact() {
               href={`mailto:${SITE.email}`}
               className="inline-flex items-center gap-3 text-content transition-colors hover:text-accent"
             >
-              <FiMail aria-hidden="true" className="h-5 w-5 text-accent" />
+              <Mail aria-hidden="true" className="h-5 w-5" />
               {SITE.email}
             </a>
             <div className="flex gap-4 pt-2">
@@ -33,7 +51,7 @@ export default function Contact() {
                 aria-label="LinkedIn"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
               >
-                <FiLinkedin aria-hidden="true" className="h-5 w-5" />
+                <LinkedinIcon aria-hidden="true" className="h-5 w-5" />
               </a>
               <a
                 href={SITE.github}
@@ -42,7 +60,7 @@ export default function Contact() {
                 aria-label="GitHub"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
               >
-                <FiGithub aria-hidden="true" className="h-5 w-5" />
+                <GithubIcon aria-hidden="true" className="h-5 w-5" />
               </a>
             </div>
           </div>

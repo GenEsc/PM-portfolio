@@ -18,15 +18,19 @@ export default function Logo({ className = "", title = "Logo" }: LogoProps) {
   const center = 50;
   const dotRadius = 34; // distance of each dot from center
   const spokeStart = 13; // where each spoke begins (just outside the hub)
+  // Round coordinates so the serialized SVG is byte-identical on server and
+  // client. `Math.sin`/`Math.cos` may differ by 1 ULP between the Node and
+  // browser engines, which otherwise triggers a hydration mismatch warning.
+  const r = (n: number) => Math.round(n * 1e4) / 1e4;
   const spokes = Array.from({ length: 12 }, (_, i) => {
     const angle = (i * 30 * Math.PI) / 180;
     const sin = Math.sin(angle);
     const cos = Math.cos(angle);
     return {
-      x1: center + spokeStart * sin,
-      y1: center - spokeStart * cos,
-      x2: center + dotRadius * sin,
-      y2: center - dotRadius * cos,
+      x1: r(center + spokeStart * sin),
+      y1: r(center - spokeStart * cos),
+      x2: r(center + dotRadius * sin),
+      y2: r(center - dotRadius * cos),
     };
   });
 

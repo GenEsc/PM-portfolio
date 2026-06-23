@@ -1,8 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FaReact, FaAngular, FaJs, FaDocker } from "react-icons/fa6";
-import { SiSpringboot, SiTypescript } from "react-icons/si";
+import {
+  ReactIcon,
+  AngularIcon,
+  JsIcon,
+  DockerIcon,
+  SpringBootIcon,
+  TypeScriptIcon,
+} from "@/components/icons/brand";
 import { SITE } from "@/lib/data/site";
 
 /**
@@ -72,27 +78,27 @@ export default function Hero() {
         />
 
         {/* Floating tech icons */}
-        <FaReact
+        <ReactIcon
           data-parallax="0.045"
           className="absolute left-[12%] top-[34%] hidden h-10 w-10 text-accent/40 transition-transform duration-150 ease-out md:block"
         />
-        <SiTypescript
+        <TypeScriptIcon
           data-parallax="0.045"
           className="absolute right-[14%] top-[30%] hidden h-9 w-9 text-accent/40 transition-transform duration-150 ease-out md:block"
         />
-        <SiSpringboot
+        <SpringBootIcon
           data-parallax="0.045"
           className="absolute right-[28%] bottom-[24%] hidden h-9 w-9 text-accent/40 transition-transform duration-150 ease-out md:block"
         />
-        <FaAngular
+        <AngularIcon
           data-parallax="0.045"
           className="absolute left-[26%] top-[18%] hidden h-9 w-9 text-accent/40 transition-transform duration-150 ease-out md:block"
         />
-        <FaJs
+        <JsIcon
           data-parallax="0.045"
           className="absolute left-[20%] bottom-[28%] hidden h-8 w-8 text-accent/40 transition-transform duration-150 ease-out md:block"
         />
-        <FaDocker
+        <DockerIcon
           data-parallax="0.045"
           className="absolute right-[18%] bottom-[34%] hidden h-9 w-9 text-accent/40 transition-transform duration-150 ease-out md:block"
         />

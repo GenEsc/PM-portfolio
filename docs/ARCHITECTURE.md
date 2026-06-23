@@ -17,13 +17,12 @@ app/              → routes, layout, route handlers, SEO/metadata files
 components/       → reusable React components, grouped by role:
   layout/         → structural chrome & overlays (Navbar, Footer, Logo, Loader)
   theme/          → theme context & toggle (ThemeProvider, ThemeToggle)
-  sections/       → page sections & sub-components (Hero, About, Stack, Projects,
-                    ProjectCard, ServicesSection, Contact, ContactForm)
-  animation/      → animation primitives (AnimateOnScroll, Counter, ScrollPath,
-                    SmoothScroll)
+  sections/       → page sections & sub-components (Hero, About, CareerTimeline,
+                    Stack, Projects, ProjectCard, ServicesSection, Contact, ContactForm)
+  animation/      → animation primitives (AnimateOnScroll, Counter, SmoothScroll)
 hooks/            → reusable client hooks (use* naming)
 lib/              → framework-agnostic code:
-  data/           → content & constants (site, projects, stack — JSX only in stack.tsx)
+  data/           → content & constants (site, projects, stack, timeline — JSX in stack.tsx/timeline.tsx)
   utils/          → helpers (smoothScroll)
 __tests__/        → Jest + RTL tests mirroring the components/ & lib/ structure
 docs/             → project documentation
@@ -49,8 +48,8 @@ cohesive folders (`hooks/`) stay flat.
 Components are **server components by default**. They become client components
 (`"use client"`) only when they need browser APIs, state or effects:
 
-- Client: `Navbar`, `Hero`, `ThemeProvider`, `ThemeToggle`, `AnimateOnScroll`,
-  `Counter`, `ScrollPath`, `ContactForm`.
+- Client: `Navbar`, `Hero`, `CareerTimeline`, `ThemeProvider`, `ThemeToggle`,
+  `AnimateOnScroll`, `Counter`, `ContactForm`.
 - Server: `About`, `Stack`, `Projects`, `ProjectCard`, `ServicesSection`,
   `Contact`, `Footer`, `Logo` and all `app/` route files.
 
@@ -89,8 +88,9 @@ The scroll/animation behaviour is split into small, reusable pieces:
   it never re-animates (the `hasAnimated` behaviour).
 - **`components/animation/Counter.tsx`** — counts from 0 to a target with `easeOutCubic`
   once visible, a single time.
-- **`components/animation/ScrollPath.tsx`** — a fixed background SVG whose path is drawn
-  via `stroke-dashoffset`, lerped toward overall scroll progress each frame.
+- **`components/sections/CareerTimeline.tsx`** — the career timeline whose bold
+  emerald path is drawn via `stroke-dashoffset` (`pathLength="1"`), lerped toward
+  section-relative scroll progress each frame.
 - **`lib/utils/smoothScroll.ts` + `components/animation/SmoothScroll.tsx`** — JS momentum scroll
   (`easeInOutCubic`) for anchor navigation, replacing CSS `scroll-behavior`.
 
@@ -103,6 +103,7 @@ All editable content is centralized in `lib/`:
 - `lib/data/site.ts` — personal data, navigation links, section ids, stats.
 - `lib/data/projects.ts` — the projects array + `getProjectBySlug`.
 - `lib/data/stack.tsx` — the technology stack grouped in three columns.
+- `lib/data/timeline.tsx` — the career milestones drawn along the timeline path.
 
 Components import from `lib/` rather than hard-coding content, so updating text
 or adding a project never requires touching the components. See

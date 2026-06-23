@@ -23,11 +23,13 @@ to keep the bundle light.
 
 Highlights:
 
-- Single page with anchored sections: Hero, About, Stack, Projects, Services, Contact.
+- Single page with anchored sections: Hero, About, Trayectoria (career timeline),
+  Stack, Projects, Services, Contact.
 - Dynamic project detail pages at `/proyectos/[slug]`.
 - Light/dark theme with `localStorage` persistence and `prefers-color-scheme` default.
-- Scroll-driven background SVG path, "pop" enter animations, cursor parallax in
-  the hero, animated counters and a smart hide/show navbar.
+- Scroll-drawn career-timeline path that converges into a green contact section,
+  "pop" enter animations, cursor parallax in the hero, animated counters and a
+  smart hide/show navbar.
 - SEO: per-page metadata, Open Graph, auto-generated sitemap & robots, semantic HTML.
 - Contact form wired to [Resend](https://resend.com).
 
@@ -124,11 +126,11 @@ pedroescacena.dev/
 ├── components/               # React components, grouped by role (see docs/COMPONENTS.md)
 │   ├── layout/               #   chrome & overlays (Navbar, Footer, Logo, Loader)
 │   ├── theme/                #   ThemeProvider, ThemeToggle
-│   ├── sections/             #   page sections + sub-components (Hero, About, …)
-│   └── animation/            #   primitives (AnimateOnScroll, Counter, ScrollPath, SmoothScroll)
+│   ├── sections/             #   page sections + sub-components (Hero, About, CareerTimeline, …)
+│   └── animation/            #   primitives (AnimateOnScroll, Counter, SmoothScroll)
 ├── hooks/                    # Custom hooks (scroll direction, active section)
 ├── lib/                      # Framework-agnostic code
-│   ├── data/                 #   content & constants (site, projects, stack)
+│   ├── data/                 #   content & constants (site, projects, stack, timeline)
 │   └── utils/                #   helpers (smoothScroll)
 ├── __tests__/                # Jest + RTL tests, mirroring the components/ & lib/ structure
 ├── docs/                     # Architecture, animations, components & contributing docs
