@@ -86,7 +86,14 @@ export default function CompanyTicker() {
           <span
             key={`${name}-${i}`}
             className="block whitespace-nowrap font-semibold text-accent"
-            style={{ height: `${LINE_EM}em`, lineHeight: `${LINE_EM}em` }}
+            style={{
+              height: `${LINE_EM}em`,
+              lineHeight: `${LINE_EM}em`,
+              // Outline in the page background so the green word stays legible when
+              // the (same-green) storyline passes behind it — clearest on mobile.
+              textShadow:
+                "0 0 2px var(--bg), -1px -1px 0 var(--bg), 1px -1px 0 var(--bg), -1px 1px 0 var(--bg), 1px 1px 0 var(--bg)",
+            }}
           >
             {name}
           </span>
