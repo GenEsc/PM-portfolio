@@ -13,13 +13,14 @@ import {
   DockerLogo,
   GitLogo,
 } from "@/components/icons/brand-logos";
-import type { BrandIcon, TechAnimation } from "@/components/sections/TechIcon";
+import type { ComponentType } from "react";
+
+/** developer-icons component: a coloured brand SVG sized via a `size` prop. */
+export type BrandIcon = ComponentType<{ size?: number; className?: string }>;
 
 export type Tech = {
   name: string;
   icon: BrandIcon;
-  /** Hover animation style (see TechIcon). */
-  animation: TechAnimation;
 };
 
 export type StackGroup = {
@@ -28,39 +29,45 @@ export type StackGroup = {
 };
 
 /**
- * Technology stack, grouped in three columns. Logos come from `developer-icons`
- * (official brand colours — not recoloured, per the library's MIT terms) and
- * animate on hover via Motion; the animation style per tech is chosen to suit
- * its logo (see change-animated-icons.md). 13 technologies in total — kept in
- * sync with the "13 tecnologías" counter in lib/data/site.ts.
+ * Technology stack (13 logos from `developer-icons`, official brand colours).
+ * Rendered as a magnetic, cursor-reactive grid on desktop and a draggable 3D
+ * sphere on mobile (see components/stack/* and change-tech-stack-interactive.md).
+ * Kept in sync with the "13 tecnologías" counter in lib/data/site.ts.
  */
 export const STACK: StackGroup[] = [
   {
     title: "Frontend",
     items: [
-      { name: "React", icon: ReactLogo, animation: "spin" },
-      { name: "Angular", icon: AngularLogo, animation: "spin" },
-      { name: "TypeScript", icon: TypeScriptLogo, animation: "pulse" },
-      { name: "HTML", icon: Html5Logo, animation: "bounce" },
-      { name: "CSS", icon: Css3Logo, animation: "bounce" },
+      { name: "React", icon: ReactLogo },
+      { name: "Angular", icon: AngularLogo },
+      { name: "TypeScript", icon: TypeScriptLogo },
+      { name: "HTML", icon: Html5Logo },
+      { name: "CSS", icon: Css3Logo },
     ],
   },
   {
     title: "Backend",
     items: [
-      { name: "Java", icon: JavaLogo, animation: "bounce" },
-      { name: "Spring Boot", icon: SpringLogo, animation: "bounce" },
-      { name: "SQL", icon: PostgresLogo, animation: "bounce" },
-      { name: "NoSQL", icon: MongoLogo, animation: "bounce" },
+      { name: "Java", icon: JavaLogo },
+      { name: "Spring Boot", icon: SpringLogo },
+      { name: "SQL", icon: PostgresLogo },
+      { name: "NoSQL", icon: MongoLogo },
     ],
   },
   {
     title: "DevOps & Cloud",
     items: [
-      { name: "AWS", icon: AwsLogo, animation: "pulse" },
-      { name: "Azure", icon: AzureLogo, animation: "pulse" },
-      { name: "Docker", icon: DockerLogo, animation: "bounce" },
-      { name: "Git", icon: GitLogo, animation: "shake" },
+      { name: "AWS", icon: AwsLogo },
+      { name: "Azure", icon: AzureLogo },
+      { name: "Docker", icon: DockerLogo },
+      { name: "Git", icon: GitLogo },
     ],
   },
 ];
+
+export type TechWithCategory = Tech & { category: string };
+
+/** Flat list of all 13 techs tagged with their category — used by the sphere. */
+export const ALL_TECHS: TechWithCategory[] = STACK.flatMap((group) =>
+  group.items.map((tech) => ({ ...tech, category: group.title }))
+);

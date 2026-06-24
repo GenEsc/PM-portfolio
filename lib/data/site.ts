@@ -35,5 +35,4 @@ export const SCROLL_OFFSET = 70;
 export const STATS = [
   { value: 5, label: "años de experiencia", suffix: "" },
   { value: 13, label: "tecnologías", suffix: "" },
-  { value: 6, label: "devs liderados", suffix: "" },
 ] as const;

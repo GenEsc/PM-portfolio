@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MenuIcon, XIcon } from "lucide-animated";
+import useIconHover from "@/components/icons/useIconHover";
 import { NAV_LINKS, SECTION_IDS, SITE } from "@/lib/data/site";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -20,6 +21,7 @@ export default function Navbar() {
   const { direction, atTop } = useScrollDirection();
   const activeId = useActiveSection(SECTION_IDS);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuIcon = useIconHover();
 
   const hidden = direction === "down" && !atTop && !menuOpen;
   const solid = !atTop || menuOpen;
@@ -86,11 +88,23 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen((open) => !open)}
+            onMouseEnter={menuIcon.onMouseEnter}
+            onMouseLeave={menuIcon.onMouseLeave}
           >
             {menuOpen ? (
-              <XIcon size={20} className="text-current" />
+              <XIcon
+                ref={menuIcon.ref}
+                size={20}
+                animateOnHover={false}
+                className="text-current"
+              />
             ) : (
-              <MenuIcon size={20} className="text-current" />
+              <MenuIcon
+                ref={menuIcon.ref}
+                size={20}
+                animateOnHover={false}
+                className="text-current"
+              />
             )}
           </button>
         </div>
