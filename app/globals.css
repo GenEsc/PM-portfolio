@@ -219,7 +219,7 @@ h4 {
 }
 
 /* ------------------------------------------------------------------ */
-/* Storyline animations: node arrival flash + confluence ripple        */
+/* Storyline animations: node arrival flash                            */
 /* (the travelling particle is positioned in JS; see ScrollStoryPath). */
 /* ------------------------------------------------------------------ */
 @keyframes story-node-flash {
@@ -242,33 +242,12 @@ h4 {
   animation: story-node-flash 0.9s ease-out forwards;
 }
 
-@keyframes story-ripple {
-  from {
-    opacity: 1;
-    transform: scale(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(5);
-  }
-}
-
-.story-ripple {
-  opacity: 0;
-  transform: scale(0);
-}
-
-.story-ripple.is-rippling {
-  animation: story-ripple 1.2s ease-out forwards;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .story-particle,
   .story-pulse {
     display: none;
   }
-  .story-node-flash,
-  .story-ripple {
+  .story-node-flash {
     animation: none !important;
     opacity: 0 !important;
   }
@@ -280,12 +259,22 @@ h4 {
 /* This is a PERMANENT state change (never reverts), driven entirely by CSS    */
 /* off that one class — not a flash/pop. id-specificity beats the utilities.   */
 /* ------------------------------------------------------------------ */
-#contact-glow-overlay {
-  opacity: 0;
-  transition: opacity 1.2s ease;
+/* Before confluence the section is the SAME background as the page (var(--bg)),
+   so it reads as no distinct block — no intermediate tint. On confluence, JS
+   drives --contact-fill 0% → 100% so the green pours IN FROM THE TOP (the funnel
+   mouth) down to the bottom, instead of flooding uniformly. The hard colour stop
+   (both at the same %) gives a clean descending fill line. */
+#contacto {
+  background: linear-gradient(
+    to bottom,
+    var(--accent) var(--contact-fill, 0%),
+    var(--bg) var(--contact-fill, 0%)
+  );
 }
-#contacto.is-confluent #contact-glow-overlay {
-  opacity: 1;
+/* Once the fill reaches the bottom, lock to solid green (JS also drops the inline
+   --contact-fill, so this must paint the final colour). */
+#contacto.is-confluent-complete {
+  background: var(--accent);
 }
 
 /* Headings and labels → white. */
@@ -327,9 +316,6 @@ h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #contact-glow-overlay {
-    transition: none;
-  }
   #contacto.is-confluent :is(h2, h3, p, a, label, input, textarea, button) {
     transition: none;
   }
@@ -353,5 +339,104 @@ h4 {
 
   .section-eyebrow {
     @apply font-mono text-sm font-medium uppercase tracking-widest text-accent;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Tech stack — magnetic grid (desktop) + 3D sphere (mobile).          */
+/* See components/stack/* and change-tech-stack-interactive.md.        */
+/* ------------------------------------------------------------------ */
+
+/* Magnetic cell: tilts toward the cursor (transform set in JS) and shows a
+   radial glow tracking --mx/--my. */
+.magnet-cell {
+  position: relative;
+  display: flex;
+  width: 88px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  padding: 14px 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease, color 0.15s ease;
+}
+.magnet-cell:hover {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  box-shadow: 0 4px 20px rgba(29, 158, 117, 0.18);
+}
+.ripple-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(29, 158, 117, 0.16) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.magnet-cell:hover .ripple-bg {
+  opacity: 1;
+}
+
+/* Three categories: 2+1 (the last group spans full width, centred) from 768px,
+   then a 3-up row from 1024px. Display comes from the `md:grid` utility. */
+@media (min-width: 768px) {
+  .stack-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    place-items: start center;
+  }
+  .stack-grid > :last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+@media (min-width: 1024px) {
+  .stack-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .stack-grid > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* Mobile sphere: tap tooltip pinned to the bottom-centre. */
+.sphere-icon {
+  cursor: grab;
+}
+.sphere-tooltip {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 30;
+  transform: translateX(-50%) translateY(4px);
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: var(--accent-deep);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnet-cell {
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   }
 }

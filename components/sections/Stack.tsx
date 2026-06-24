@@ -1,11 +1,11 @@
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
-import TechIcon from "@/components/sections/TechIcon";
-import { STACK } from "@/lib/data/stack";
+import StackMagneticGrid from "@/components/stack/StackMagneticGrid";
+import TechSphere from "@/components/stack/TechSphere";
 
 /**
- * Technology stack, grouped in three columns (Frontend / Backend / DevOps).
- * Icons + names only — no proficiency bars, by design. Each logo animates on
- * hover (see TechIcon).
+ * Technology stack. Two device-specific experiences (see change-tech-stack-interactive.md):
+ *  - desktop (≥768px): a magnetic grid of 3 categories, cells tilt toward the cursor;
+ *  - mobile (<768px): a draggable 3D sphere of all logos with tap tooltips.
  */
 export default function Stack() {
   return (
@@ -20,27 +20,14 @@ export default function Stack() {
           </h2>
         </AnimateOnScroll>
 
-        <div className="mt-14 grid gap-10 md:grid-cols-3">
-          {STACK.map((group, groupIndex) => (
-            <AnimateOnScroll key={group.title} delay={groupIndex * 50}>
-              <div>
-                <h3 className="font-display text-h3 font-semibold text-content">
-                  {group.title}
-                </h3>
-                <ul className="mt-6 space-y-4">
-                  {group.items.map((tech) => (
-                    <TechIcon
-                      key={tech.name}
-                      icon={tech.icon}
-                      name={tech.name}
-                      animation={tech.animation}
-                    />
-                  ))}
-                </ul>
-              </div>
-            </AnimateOnScroll>
-          ))}
-        </div>
+        <AnimateOnScroll delay={100}>
+          <div className="mt-14">
+            <StackMagneticGrid />
+            <div className="md:hidden">
+              <TechSphere />
+            </div>
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import {
   GithubIcon,
   LinkedinIcon,
 } from "@/components/icons/animated";
+import HoverIconLink from "@/components/icons/HoverIconLink";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
 import ContactForm from "./ContactForm";
 import { SITE } from "@/lib/data/site";
@@ -10,25 +11,19 @@ import { SITE } from "@/lib/data/site";
 /**
  * "Contacto" section: heading, form, visible email and social links.
  *
- * This is where the career storyline "arrives". The section starts NEUTRAL; when
- * the scroll path reaches it, ScrollStoryPath adds `.is-confluent`, which fades
- * in the green overlay below and flips all the text/form to white — a permanent
- * "confluence" (see change-storyline-animations-fix.md and the `.is-confluent`
- * rules in globals.css). The colour change is CSS-driven off that one class.
+ * This is where the career storyline "arrives". The section's background is the
+ * SAME as the page until the scroll path reaches it (no intermediate tint), then
+ * ScrollStoryPath adds `.is-confluent` and animates the `--contact-fill` custom
+ * property so the green pours in from the top down to the bottom, finishing with
+ * `.is-confluent-complete` (solid). Text/form colours flip to white via the
+ * `.is-confluent` rules in globals.css — all a permanent, CSS-driven state.
  */
 export default function Contact() {
   return (
     <section
       id="contacto"
-      className="relative z-10 scroll-mt-[70px] overflow-hidden bg-surface-secondary py-24 sm:py-28"
+      className="relative z-10 scroll-mt-[70px] overflow-hidden py-24 sm:py-28"
     >
-      {/* Confluence flood: emerald overlay, hidden until `.is-confluent`. */}
-      <div
-        id="contact-glow-overlay"
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-accent to-accent-hover"
-      />
-
       <div className="container-page relative z-10 grid gap-12 md:grid-cols-2 md:gap-16">
         <AnimateOnScroll>
           <h2 className="font-display text-h2-mobile font-bold text-content sm:text-h2">
@@ -39,32 +34,31 @@ export default function Contact() {
           </p>
 
           <div className="mt-8 space-y-3">
-            <a
+            <HoverIconLink
               href={`mailto:${SITE.email}`}
+              icon={AtSignIcon}
+              iconClassName="text-current"
               className="inline-flex items-center gap-3 text-content transition-colors hover:text-accent"
             >
-              <AtSignIcon size={20} className="text-current" />
               {SITE.email}
-            </a>
+            </HoverIconLink>
             <div className="flex gap-4 pt-2">
-              <a
+              <HoverIconLink
                 href={SITE.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn"
+                ariaLabel="LinkedIn"
+                icon={LinkedinIcon}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
-              >
-                <LinkedinIcon size={20} aria-hidden="true" />
-              </a>
-              <a
+              />
+              <HoverIconLink
                 href={SITE.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="GitHub"
+                ariaLabel="GitHub"
+                icon={GithubIcon}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-content transition-colors hover:border-accent hover:text-accent"
-              >
-                <GithubIcon size={20} aria-hidden="true" />
-              </a>
+              />
             </div>
           </div>
         </AnimateOnScroll>
