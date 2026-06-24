@@ -1,0 +1,7 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#F8F9FA"/>
+  <rect x="60" y="60" width="320" height="380" rx="12" fill="#9CA3AF" opacity="0.35"/>
+  <rect x="420" y="60" width="320" height="380" rx="12" fill="#1D9E75" opacity="0.25"/>
+  <path d="M390 250 l30 -15 v30 z" fill="#0F6E56"/>
+  <text x="400" y="470" font-family="monospace" font-size="22" fill="#0F6E56" text-anchor="middle">Modernización · placeholder</text>
+</svg>

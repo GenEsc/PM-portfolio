@@ -1,0 +1,357 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Theme tokens                                                        */
+/* Light is the default; .dark on <html> switches to the dark palette. */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #ffffff; /* fondo claro (default) */
+  --bg-secondary: #f8f9fa; /* gris muy suave */
+  --text: #111111; /* texto principal claro */
+  --text-muted: #6b7280; /* gris medio */
+  --border: #e5e7eb;
+  --accent: #1d9e75; /* verde esmeralda */
+  --accent-hover: #0f6e56; /* verde oscuro */
+  --accent-soft: #e1f5ee; /* verde muy claro */
+  --accent-deep: #085041; /* verde muy oscuro — flood del botón primario */
+
+  /* Monospace for code/stack labels. Kept as a system stack so the site loads
+     only two web fonts (Fraunces + Inter), per the "max 2 fonts" rule. */
+  --font-inter-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo,
+    Consolas, monospace;
+}
+
+.dark {
+  --bg: #0a0a0a; /* casi negro */
+  --bg-secondary: #111111; /* gris oscuro */
+  --text: #f9fafb; /* blanco */
+  --text-muted: #9ca3af; /* gris claro */
+  --border: #262626;
+  --accent: #1d9e75;
+  --accent-hover: #0f6e56;
+  --accent-soft: #0f2a22;
+  --accent-deep: #085041;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+html {
+  /* Smooth scrolling is handled in JS (lib/smoothScroll.ts) for easing control
+     and cross-browser consistency — no CSS `scroll-behavior: smooth`.
+     scroll-padding-top remains as a no-JS fallback for native anchor jumps. */
+  scroll-padding-top: 70px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+/* Respect users who prefer reduced motion: disable scroll-driven motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Pop-on-scroll enter animation (driven by AnimateOnScroll)           */
+/* ------------------------------------------------------------------ */
+.pop-init {
+  opacity: 0;
+  transform: scale(0.75);
+}
+
+.pop-in {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero page-entry animation                                          */
+/* Staggered fade + slide-up on first load. CSS keyframes (not JS) so it */
+/* runs without hydration and degrades gracefully.                     */
+/* ------------------------------------------------------------------ */
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  opacity: 0;
+  animation: heroEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ------------------------------------------------------------------ */
+/* Loading screen (components/Loader.tsx)                              */
+/* Full-screen overlay with a spinning brand mark, shown once per      */
+/* session. Background uses --bg so it matches the active theme (no    */
+/* beige, no theme flash). Exits by sliding up to reveal the page.     */
+/* ------------------------------------------------------------------ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+  transform: translateY(0);
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.loader.is-exiting {
+  transform: translateY(-100%);
+}
+
+.loader__logo {
+  width: 96px;
+  height: 96px;
+  color: var(--accent); /* verde esmeralda in light and dark */
+}
+
+/* Continuous spin (+ subtle scale pulse) while loading. */
+@media (prefers-reduced-motion: no-preference) {
+  .loader__logo {
+    animation: loaderSpin 1.2s linear infinite;
+  }
+}
+
+/* Freeze the logo the moment the exit starts (it has finished its cycle). */
+.loader.is-exiting .loader__logo {
+  animation-play-state: paused;
+}
+
+@keyframes loaderSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.04);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Hidden synchronously before paint on repeat visits (loaderInitScript). */
+.loader-seen .loader {
+  display: none !important;
+}
+
+/* Reduced motion: static logo, simple fade instead of the slide-up. */
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    transition: opacity 300ms ease;
+    transform: none !important;
+  }
+  .loader.is-exiting {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Storyline origin (components/animation/ScrollStoryPath.tsx)         */
+/* Spinning brand logo + pulsing ring marking where the career path is */
+/* "born". Compositor-only transforms/opacity (cheap, no layout).      */
+/* ------------------------------------------------------------------ */
+@keyframes story-logo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes story-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.story-logo-spin {
+  transform-origin: center;
+  animation: story-logo-spin 4s linear infinite;
+}
+
+.story-pulse-ring {
+  animation: story-pulse-ring 2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-logo-spin {
+    animation: none;
+  }
+  .story-pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Storyline animations: node arrival flash + confluence ripple        */
+/* (the travelling particle is positioned in JS; see ScrollStoryPath). */
+/* ------------------------------------------------------------------ */
+@keyframes story-node-flash {
+  from {
+    opacity: 0.4;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+.story-node-flash {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.story-node-flash.is-flashing {
+  animation: story-node-flash 0.9s ease-out forwards;
+}
+
+@keyframes story-ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(5);
+  }
+}
+
+.story-ripple {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.story-ripple.is-rippling {
+  animation: story-ripple 1.2s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-particle,
+  .story-pulse {
+    display: none;
+  }
+  .story-node-flash,
+  .story-ripple {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Confluence: the storyline floods the contact section green on arrival.    */
+/* ScrollStoryPath adds `.is-confluent` to #contacto once the path reaches it. */
+/* This is a PERMANENT state change (never reverts), driven entirely by CSS    */
+/* off that one class — not a flash/pop. id-specificity beats the utilities.   */
+/* ------------------------------------------------------------------ */
+#contact-glow-overlay {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+#contacto.is-confluent #contact-glow-overlay {
+  opacity: 1;
+}
+
+/* Headings and labels → white. */
+#contacto.is-confluent :is(h2, h3, label) {
+  color: #fff;
+  transition: color 0.8s ease;
+}
+
+/* Body text and links → white-tinted. */
+#contacto.is-confluent :is(p, a) {
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.8s ease;
+}
+
+/* Social/email link chips: white border. */
+#contacto.is-confluent a[aria-label] {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Form fields adapt to the green background. */
+#contacto.is-confluent :is(input, textarea) {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  transition: color 0.8s ease, background-color 0.8s ease, border-color 0.8s ease;
+}
+#contacto.is-confluent :is(input, textarea)::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+#contacto.is-confluent :is(input, textarea):focus {
+  border-color: #fff;
+}
+
+/* Submit button → white with dark-green text. */
+#contacto.is-confluent button[type="submit"] {
+  background-color: #fff;
+  color: #085041;
+  transition: color 0.8s ease, background-color 0.8s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #contact-glow-overlay {
+    transition: none;
+  }
+  #contacto.is-confluent :is(h2, h3, p, a, label, input, textarea, button) {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium text-content transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .section-eyebrow {
+    @apply font-mono text-sm font-medium uppercase tracking-widest text-accent;
+  }
+}

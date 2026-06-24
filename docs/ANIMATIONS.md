@@ -1,0 +1,226 @@
+# Animations
+
+Every animation in the project, with the exact easings and logic so they can be
+modified without guessing. All effects use **native CSS + `IntersectionObserver`**
+(no animation libraries). They respect `prefers-reduced-motion` via a global
+override in `app/globals.css`.
+
+---
+
+## 1. Pop on scroll (enter animation)
+
+**Where:** `components/animation/AnimateOnScroll.tsx`, CSS in `app/globals.css`
+(`.pop-init` / `.pop-in`).
+
+- From: `opacity: 0; transform: scale(0.75)` (`.pop-init`)
+- To: `opacity: 1; transform: scale(1)` (`.pop-in`)
+- Duration: **400ms**
+- Easing: **`cubic-bezier(0.34, 1.56, 0.64, 1)`** (gentle bounce)
+- Stagger: pass `delay` (ms) — the project convention is **50ms** between
+  siblings (`delay={i * 50}`), applied as `transition-delay`.
+
+**Logic:** an `IntersectionObserver` with `threshold: 0.15` watches the wrapper.
+On first intersection it sets `visible = true` (swapping `.pop-init` → `.pop-in`)
+and **calls `observer.disconnect()`** — so once an element has appeared it stays
+visible forever and never re-animates on scroll-up (the `hasAnimated` rule).
+
+```tsx
+<AnimateOnScroll delay={index * 50}>...</AnimateOnScroll>
+```
+
+To change the feel, edit the `transition` in `.pop-in` (globals.css). To change
+when it triggers, edit the `threshold`.
+
+---
+
+## 2. Animated counters
+
+**Where:** `components/animation/Counter.tsx`. Used in the About section.
+
+- Counts from **0** to `value`.
+- Duration: **1200ms** (default `duration` prop).
+- Easing: **`easeOutCubic`** → `1 - Math.pow(1 - t, 3)`.
+- Stagger between counters: **200ms** (`delay={i * 200}` in `About.tsx`).
+- Animates **once** (an internal `hasAnimated` ref) and lands **exactly** on the
+  target value.
+
+**Logic:** an `IntersectionObserver` (`threshold: 0.15`) starts a
+`requestAnimationFrame` loop when the element enters the viewport. Each frame
+computes `progress = elapsed / duration`, applies `easeOutCubic`, and sets the
+displayed value; on completion it snaps to `value` and the observer disconnects.
+
+---
+
+## 3. Navbar hide/show on scroll
+
+**Where:** `components/layout/Navbar.tsx` + `hooks/useScrollDirection.ts`.
+
+- **Scroll down** (and not at top): navbar hides via `transform: translateY(-100%)`.
+- **Scroll up** (any amount): navbar reappears immediately.
+- **At top** (`scrollY === 0`): transparent, no background/border.
+- **Scrolled:** solid background with `backdrop-filter: blur(12px)` and a subtle
+  bottom border.
+- Transition: **300ms** on `transform` and `background`.
+- The navbar is `position: fixed; top: 0` (sticky behaviour).
+
+**Logic:** `useScrollDirection` compares `window.scrollY` between frames
+(throttled with `requestAnimationFrame`) to derive `direction` and `atTop`.
+`Navbar` computes `hidden = direction === "down" && !atTop && !menuOpen` and
+`solid = !atTop || menuOpen`, exposed as `data-hidden` / `data-solid` (also used
+by tests).
+
+---
+
+## 4. Active navbar link
+
+**Where:** `hooks/useActiveSection.ts` + `components/layout/Navbar.tsx`.
+
+The active section's link is highlighted in emerald (`text-accent`).
+
+**Logic:** a single `IntersectionObserver` observes all sections with
+`rootMargin: "-30% 0px -55% 0px"` and multiple thresholds. The section with the
+largest `intersectionRatio` wins and its link gets `data-active="true"` +
+`aria-current`.
+
+---
+
+## 5. Cursor parallax (hero only)
+
+**Where:** `components/sections/Hero.tsx`.
+
+Decorative circles and floating tech icons move **opposite** to the cursor to
+create depth. Active only in the hero and only on fine-pointer (non-touch)
+devices (`matchMedia("(pointer: fine)")`).
+
+Depth factors (the `data-parallax` attribute):
+
+| Layer              | Factor  |
+| ------------------ | ------- |
+| Large circles      | `0.02`  |
+| Small circles      | `0.035` |
+| Tech icons         | `0.045` |
+
+- Transition: **`transform 0.15s ease`** for smoothing.
+- On `mousemove`, offset is computed relative to the hero's center:
+  `translate(-dx * factor, -dy * factor)`.
+
+To add a parallax element, give it `data-parallax="<factor>"` inside the hero.
+
+---
+
+## 6. Scroll-drawn career path (timeline)
+
+**Where:** `components/sections/CareerTimeline.tsx` (`#trayectoria` section).
+Data in `lib/data/timeline.tsx`.
+
+The career timeline **is** the scroll path: a bold emerald line drawn on scroll
+that connects four milestones (BBVA → Dedalus → Izertis → Verti) and visually
+leads the eye toward the green contact section (§5 of the change brief). It is
+scoped to its own section below the hero, so the hero stays clean.
+
+- **Stroke:** `stroke-width` 7px on desktop, 4px on mobile, with
+  `vector-effect="non-scaling-stroke"` so the line stays a constant, bold width
+  no matter how the SVG is stretched. Colour is an emerald `<linearGradient>`
+  whose opacity deepens top→bottom (0.3 → 0.65) so its presence grows as it nears
+  contact.
+- **Draw-on-scroll (lerp):** each `<path data-draw>` uses **`pathLength="1"`**, so
+  the geometry is normalised — `stroke-dasharray: 1` is one dash covering the
+  whole path; `stroke-dashoffset` 1 = undrawn, 0 = fully drawn. Scroll computes a
+  section-relative `progress` (from the section's `getBoundingClientRect()` vs the
+  viewport) and sets `target = 1 - progress`. A `requestAnimationFrame` loop
+  lerps the current offset toward it:
+
+  ```js
+  current += (target - current) * 0.08; // lerp factor
+  ```
+
+  Using `pathLength` keeps the draw exactly proportional to scroll regardless of
+  scaling/`non-scaling-stroke`, and decoupling from the scroll event keeps it
+  fluid. `prefers-reduced-motion` skips the lerp (snaps to target).
+- **Layout:** desktop weaves the path left↔right (`d` cubic béziers) between
+  alternating cards; mobile is a thin straight rail with stacked cards. Node dots
+  are DOM elements positioned at the same coordinates as the path waypoints.
+- **Milestone cards** pop in via `AnimateOnScroll` (§1) as the path reaches them,
+  and stay visible (no re-animation on scroll-up).
+
+To change the weave, edit the `d` attribute; to change milestones, edit
+`lib/data/timeline.tsx`.
+
+---
+
+## 7. Availability badge pulse
+
+**Where:** `components/sections/Hero.tsx` + `tailwind.config.ts` keyframes.
+
+A green dot pulses infinitely. Keyframe `pulse` animates `scale` (1 → 1.6) and
+`opacity` (1 → 0.4); exposed as the `animate-pulse-dot` utility
+(`1.8s ease-in-out infinite`).
+
+---
+
+## 8. Smooth scroll (JS momentum)
+
+**Where:** `lib/utils/smoothScroll.ts` + `components/animation/SmoothScroll.tsx`.
+
+CSS `scroll-behavior: smooth` is **not** used (abrupt, browser-dependent, no
+easing control). Instead, `components/animation/SmoothScroll.tsx` mounts a single delegated
+click listener that intercepts in-page anchor clicks (`<a href="#...">`) and
+animates the scroll in JS:
+
+- **Easing:** `easeInOutCubic` — slow start, fast middle, gentle settle.
+- **Duration:** distance-based, `Math.min(Math.max(|distance| / 3, 500), 1200)`
+  ms — short jumps feel snappy, long jumps cinematic.
+- **Offset:** target is `element top − 70px` (`SCROLL_OFFSET`) so content clears
+  the fixed navbar; the URL hash is kept in sync via `history.pushState`.
+- **Reduced motion:** jumps straight to the target.
+
+`scroll-padding-top: 70px` remains in CSS as a no-JS fallback for native anchor
+jumps.
+
+---
+
+## 9. Hero page-entry animation
+
+**Where:** `components/sections/Hero.tsx` + `.hero-enter` keyframes in `app/globals.css`.
+
+On first load the hero elements fade + slide up in a staggered sequence. Built
+with CSS `@keyframes heroEnter` (not JS) so it runs without hydration and
+degrades gracefully.
+
+- From: `opacity: 0; transform: translateY(16px)` → to `opacity: 1; translateY(0)`.
+- Duration: **0.6s**, easing **`cubic-bezier(0.22, 1, 0.36, 1)`**, `forwards`.
+- Stagger (`animation-delay` per element): **name 0ms · tagline 150ms · badge
+  300ms · CTAs 450ms**.
+
+---
+
+## 10. Navbar active link transition
+
+Navbar links use `transition-colors duration-300 ease-out` so the active section
+highlight fades softly (≈`color 0.3s ease`) rather than swapping instantly. See
+section 4 for how the active section is detected.
+
+---
+
+## 11. Loading screen (first paint)
+
+**Where:** `components/layout/Loader.tsx` + `.loader` / `loaderSpin` in `app/globals.css`.
+
+Full-screen overlay shown once per session over a **theme-matched** background
+(`var(--bg)`, so no beige and no theme flash). Plays at most once per browser
+session — `sessionStorage` key `hasSeenLoader` gates it, and `loaderInitScript`
+(in `app/layout.tsx`, mirroring `themeInitScript`) hides it before paint on
+repeat visits.
+
+- **Spin:** `loaderSpin 1.2s linear infinite` — `rotate(0→360deg)` with a subtle
+  `scale(1→1.04→1)` pulse at the 50% keyframe. Logo color `var(--accent)`.
+- **Timing:** stays up until assets are ready (`window` `load`) **and** a minimum
+  of **1000ms** has elapsed, whichever is later.
+- **Exit:** the logo finishes its current rotation (it never cuts mid-spin —
+  computed from elapsed time, then `animation-play-state: paused`), then the
+  overlay slides up `translateY(-100%)` over **700ms**,
+  easing **`cubic-bezier(0.65, 0, 0.35, 1)`** (no bounce), revealing the page.
+- **Scroll lock:** `body { overflow: hidden }` while the overlay is up, restored
+  on exit.
+- **Reduced motion:** no spin (static logo) and a simple opacity fade instead of
+  the slide-up.
