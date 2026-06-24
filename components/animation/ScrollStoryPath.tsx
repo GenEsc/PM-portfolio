@@ -308,6 +308,7 @@ export default function ScrollStoryPath() {
     let isScrolling = false;
     let scrollIdleTimer = 0;
     let idleRaf = 0;
+    let scrollRaf = 0; // coalesces scroll events into one frame-aligned redraw
     let idleY = 0; // px down the drawn line (CONSTANT speed, not constant time)
     const IDLE_V = 6; // px per frame — constant travel speed of the segment
     // Stop the idle energy once the line has essentially arrived (≥ this much of
@@ -372,12 +373,18 @@ export default function ScrollStoryPath() {
         maybeStartIdle();
       }, 150);
 
-      // Pin the drawn tip directly to the scroll position so it stays at a FIXED
-      // point in the viewport (LEAD) whether you scroll fast or slow — no lerp/cap
-      // that makes the line crawl to catch up after a quick scroll.
-      target = targetReveal();
-      current = target;
-      apply(current);
+      // Pin the drawn tip to the scroll position (fixed at LEAD in the viewport,
+      // fast or slow — no lerp lag), but coalesce many scroll events into ONE
+      // update per animation frame so the redraw is aligned with the content's
+      // paint (smooth, no synchronous getTotalLength thrash on every event).
+      if (!scrollRaf) {
+        scrollRaf = window.requestAnimationFrame(() => {
+          scrollRaf = 0;
+          target = targetReveal();
+          current = target;
+          apply(current);
+        });
+      }
     };
 
     // Coalesce measures through rAF so a ResizeObserver can't loop synchronously.
@@ -411,6 +418,7 @@ export default function ScrollStoryPath() {
 
     return () => {
       if (idleRaf) window.cancelAnimationFrame(idleRaf);
+      if (scrollRaf) window.cancelAnimationFrame(scrollRaf);
       if (fillRaf) window.cancelAnimationFrame(fillRaf);
       window.clearTimeout(scrollIdleTimer);
       window.removeEventListener("scroll", onScroll);
