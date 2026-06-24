@@ -1,23 +1,5 @@
 import { FolderCodeIcon, CreditCardIcon, UsersIcon } from "lucide-animated";
-import type {
-  ForwardRefExoticComponent,
-  HTMLAttributes,
-  RefAttributes,
-} from "react";
-import type { AnimatedIconHandle } from "@/components/icons/animated";
-
-/**
- * A lucide-animated icon component: a coloured-by-currentColor SVG that can
- * animate on hover or, via its ref handle, be triggered programmatically — the
- * career-timeline nodes fire `startAnimation()` when the scroll path reaches
- * them (see ScrollStoryPath).
- */
-export type AnimatedIcon = ForwardRefExoticComponent<
-  HTMLAttributes<HTMLDivElement> & {
-    size?: number;
-    animateOnHover?: boolean;
-  } & RefAttributes<AnimatedIconHandle>
->;
+import type { AnimatedIcon } from "@/components/icons/animated";
 
 /**
  * Career milestones shown as nodes along the scroll storyline (oldest →

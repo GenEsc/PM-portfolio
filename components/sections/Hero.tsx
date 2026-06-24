@@ -107,7 +107,7 @@ export default function Hero() {
       </div>
 
       <div className="container-page relative">
-        <div className="max-w-3xl">
+        <div>
           {/* Availability badge — staggered page-entry (delay 300ms) */}
           <span
             className="hero-enter mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface-secondary px-4 py-1.5 text-sm font-medium text-content"

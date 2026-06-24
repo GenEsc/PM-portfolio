@@ -26,8 +26,26 @@ export {
   LinkedinIcon,
 } from "lucide-animated";
 
+import type {
+  ForwardRefExoticComponent,
+  HTMLAttributes,
+  RefAttributes,
+} from "react";
+
 /** Imperative handle exposed by every lucide-animated icon ref. */
 export type AnimatedIconHandle = {
   startAnimation: () => void;
   stopAnimation: () => void;
 };
+
+/**
+ * A lucide-animated icon component: a currentColor SVG that animates on hover by
+ * default, or — with a ref + `animateOnHover={false}` — is driven programmatically
+ * via its handle. Used to type icons passed around as data/props.
+ */
+export type AnimatedIcon = ForwardRefExoticComponent<
+  HTMLAttributes<HTMLDivElement> & {
+    size?: number;
+    animateOnHover?: boolean;
+  } & RefAttributes<AnimatedIconHandle>
+>;

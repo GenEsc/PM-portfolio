@@ -81,7 +81,6 @@ export default function ScrollStoryPath() {
   const funnelRef = useRef<SVGSVGElement | null>(null);
   const particleRef = useRef<HTMLDivElement | null>(null);
   const pulseRef = useRef<HTMLDivElement | null>(null);
-  const rippleRef = useRef<HTMLSpanElement | null>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const flashRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -96,11 +95,11 @@ export default function ScrollStoryPath() {
     const funnel = funnelRef.current;
     const particle = particleRef.current;
     const pulse = pulseRef.current;
-    const ripple = rippleRef.current;
     if (!wrap || !overlay || !svg || !weave || !reveal || !funnel) return;
 
     // One-time animation flags (never re-trigger on scroll-up, per site rule).
     let confluenceTriggered = false;
+    let fillRaf = 0; // rAF id for the top-to-bottom contact fill
     const flashed = MILESTONES.map(() => false);
 
     const reduceMotion =
@@ -147,18 +146,28 @@ export default function ScrollStoryPath() {
           )
         : MILESTONES.map((_, i) => spanH * (0.42 + 0.16 * i));
 
-      // Anchors: gentle top weave → the three milestones → straight tail down
-      // into the funnel mouth at the seam.
-      const tail = Math.min(200, spanH * 0.22);
-      const firstY = nodeY[0];
-      const pts: [number, number][] = [
-        [50, 0],
-        [70, Math.max(firstY * 0.4, 1)],
-        [30, Math.max(firstY * 0.72, 2)],
-      ];
-      MILESTONES.forEach((_, i) => pts.push([NODE_X[i], nodeY[i]]));
-      pts.push([50, Math.max(spanH - tail, nodeY[n - 1] + 40)]);
-      weave.setAttribute("d", `${smoothPath(pts)} L50 ${spanH}`);
+      // On mobile there's no horizontal room for the zigzag: draw a single
+      // straight, centred vertical line (thinner stroke) so neither the line nor
+      // the cards overflow. Desktop keeps the organic weave that threads through
+      // the off-centre nodes.
+      const isMobile = window.innerWidth < 768;
+      weave.setAttribute("stroke-width", isMobile ? "4" : "6");
+      if (isMobile) {
+        weave.setAttribute("d", `M50 0 L50 ${spanH}`);
+      } else {
+        // Anchors: gentle top weave → the three milestones → straight tail down
+        // into the funnel mouth at the seam.
+        const tail = Math.min(200, spanH * 0.22);
+        const firstY = nodeY[0];
+        const pts: [number, number][] = [
+          [50, 0],
+          [70, Math.max(firstY * 0.4, 1)],
+          [30, Math.max(firstY * 0.72, 2)],
+        ];
+        MILESTONES.forEach((_, i) => pts.push([NODE_X[i], nodeY[i]]));
+        pts.push([50, Math.max(spanH - tail, nodeY[n - 1] + 40)]);
+        weave.setAttribute("d", `${smoothPath(pts)} L50 ${spanH}`);
+      }
 
       funnelStart = spanH - 150; // matches the funnel's fixed pixel height
 
@@ -168,8 +177,21 @@ export default function ScrollStoryPath() {
         const card = cardRefs.current[i];
         if (!node) return;
         node.style.top = `${(nodeY[i] / spanH) * 100}%`;
-        node.style.left = `${NODE_X[i]}%`;
-        if (card) {
+        node.style.left = isMobile ? "50%" : `${NODE_X[i]}%`;
+        if (!card) return;
+        if (isMobile) {
+          // Centred below the dot, width clamped to the viewport → no overflow.
+          card.style.left = "50%";
+          card.style.right = "auto";
+          card.style.top = "26px";
+          card.style.transform = "translateX(-50%)";
+          card.style.width = `${Math.min(wrapW - 32, 360)}px`;
+        } else {
+          // Desktop: vertically centred beside the dot (Tailwind top-1/2 /
+          // -translate-y-1/2), offset to whichever side keeps it on screen.
+          card.style.top = "";
+          card.style.transform = "";
+          card.style.width = "";
           if (NODE_X[i] <= 50) {
             card.style.left = "22px";
             card.style.right = "auto";
@@ -189,8 +211,6 @@ export default function ScrollStoryPath() {
 
     let target = 0;
     let current = 0;
-    let running = false;
-    let raf = 0;
 
     // Point on the weave where its y matches `ty` (the drawn tip). Binary-search
     // by length since the path is monotonic in y. Null when geometry isn't
@@ -247,14 +267,37 @@ export default function ScrollStoryPath() {
         }
       }
 
-      // Animation 3 — confluence. Once the path nearly reaches contact, flood
-      // the whole #contacto section green (permanent — it stays green, handled
-      // by the `.is-confluent` CSS in globals.css) and play a decorative ripple
-      // at the arrival point. NOT a node flash: this is a permanent state change.
+      // Animation 3 — confluence. Once the path nearly reaches contact, the green
+      // pours into #contacto FROM THE TOP (the funnel mouth) down to the bottom:
+      // `.is-confluent` starts the text/form colour flip immediately, while
+      // `--contact-fill` is animated 0% → 100% (easeOutCubic) to descend the green,
+      // then `.is-confluent-complete` locks it solid. Permanent state change (never
+      // reverts).
       if (!confluenceTriggered && progress >= 0.96) {
         confluenceTriggered = true;
-        ripple?.classList.add("is-rippling");
-        document.getElementById("contacto")?.classList.add("is-confluent");
+        const contact = document.getElementById("contacto");
+        if (contact) {
+          contact.classList.add("is-confluent");
+          if (reduceMotion) {
+            contact.classList.add("is-confluent-complete");
+          } else {
+            let fillProgress = 0;
+            const animateFill = () => {
+              // Per-frame fill speed (~60fps). Lower = slower/more dramatic pour.
+              fillProgress = Math.min(fillProgress + 0.005, 1);
+              const eased = 1 - Math.pow(1 - fillProgress, 3); // easeOutCubic
+              contact.style.setProperty("--contact-fill", `${eased * 100}%`);
+              if (fillProgress < 1) {
+                fillRaf = window.requestAnimationFrame(animateFill);
+              } else {
+                // Lock solid first, then drop the inline var so it can't reset.
+                contact.classList.add("is-confluent-complete");
+                contact.style.removeProperty("--contact-fill");
+              }
+            };
+            fillRaf = window.requestAnimationFrame(animateFill);
+          }
+        }
       }
     };
 
@@ -307,35 +350,11 @@ export default function ScrollStoryPath() {
     };
 
     const maybeStartIdle = () => {
-      if (isScrolling || running || reduceMotion || !storyInView()) return;
+      if (isScrolling || reduceMotion || !storyInView()) return;
       if (current < spanH * 0.02 || current >= spanH * IDLE_MAX) return;
       idleY = 0;
       if (idleRaf) window.cancelAnimationFrame(idleRaf);
       idleRaf = window.requestAnimationFrame(runIdle);
-    };
-
-    // Cap how fast the drawn tip can travel (px/frame). On a quick scroll the
-    // line keeps drawing at this speed instead of snapping, so it doesn't rush
-    // through the milestones and each arrival flash has time to be seen. Normal
-    // reading scroll stays under the cap, so it feels 1:1.
-    const MAX_DRAW_V = 10;
-
-    const tick = () => {
-      const step = (target - current) * 0.16;
-      current += Math.max(-MAX_DRAW_V, Math.min(MAX_DRAW_V, step));
-      if (Math.abs(target - current) < 0.5) {
-        current = target;
-        running = false;
-      }
-      apply(current);
-      if (running) raf = window.requestAnimationFrame(tick);
-      else if (!isScrolling) maybeStartIdle();
-    };
-
-    const ensureRunning = () => {
-      if (running) return;
-      running = true;
-      raf = window.requestAnimationFrame(tick);
     };
 
     const onScroll = () => {
@@ -353,13 +372,12 @@ export default function ScrollStoryPath() {
         maybeStartIdle();
       }, 150);
 
+      // Pin the drawn tip directly to the scroll position so it stays at a FIXED
+      // point in the viewport (LEAD) whether you scroll fast or slow — no lerp/cap
+      // that makes the line crawl to catch up after a quick scroll.
       target = targetReveal();
-      if (reduceMotion) {
-        current = target;
-        apply(current);
-      } else {
-        ensureRunning();
-      }
+      current = target;
+      apply(current);
     };
 
     // Coalesce measures through rAF so a ResizeObserver can't loop synchronously.
@@ -392,8 +410,8 @@ export default function ScrollStoryPath() {
     }
 
     return () => {
-      if (raf) window.cancelAnimationFrame(raf);
       if (idleRaf) window.cancelAnimationFrame(idleRaf);
+      if (fillRaf) window.cancelAnimationFrame(fillRaf);
       window.clearTimeout(scrollIdleTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", scheduleMeasure);
@@ -527,10 +545,10 @@ export default function ScrollStoryPath() {
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}
-              className="absolute top-1/2 w-56 -translate-y-1/2 rounded-xl border border-line bg-surface/95 p-4 shadow-md backdrop-blur sm:w-64"
+              className="absolute top-1/2 w-56 -translate-y-1/2 rounded-xl border border-line bg-surface/95 p-4 text-center shadow-md backdrop-blur sm:w-64 md:text-left"
               style={{ left: "22px" }}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 md:justify-start">
                 {/* Animated milestone icon — fired once when the node flashes
                     in (see iconRefs.startAnimation in apply). */}
                 <Icon
@@ -568,13 +586,6 @@ export default function ScrollStoryPath() {
           <span className="absolute -left-[9px] -top-[9px] block h-[18px] w-[18px] rounded-full bg-accent/25" />
           <span className="absolute -left-[5px] -top-[5px] block h-[10px] w-[10px] rounded-full bg-accent" />
         </div>
-
-        {/* Animation 3 — confluence ripple at the arrival point (top of contact,
-            i.e. the overlay's bottom-centre / funnel base). Fires once. */}
-        <span
-          ref={rippleRef}
-          className="story-ripple absolute bottom-0 left-1/2 -ml-[50px] -mb-[50px] block h-[100px] w-[100px] rounded-full bg-white/25"
-        />
       </div>
     </>
   );

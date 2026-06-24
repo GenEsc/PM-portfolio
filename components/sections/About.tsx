@@ -13,7 +13,7 @@ export default function About() {
       id="sobre-mi"
       className="relative z-10 scroll-mt-[70px] py-24 sm:py-28"
     >
-      <div className="container-page max-w-3xl">
+      <div className="container-page">
         <div>
           <AnimateOnScroll>
             <h2 className="font-display text-h2-mobile font-bold text-content sm:text-h2">
@@ -24,11 +24,11 @@ export default function About() {
           <AnimateOnScroll delay={100}>
             <div className="mt-6 space-y-4 text-lg text-content-muted">
               <p>
-                Llevo 5 años desarrollando aplicaciones web-app en entornos
+                Llevo 5 años desarrollando aplicaciones web-app en
                 empresas líderes en su sector, con empresas como{" "}
-                <CompanyTicker />. Hoy lidero como{" "}
+                <CompanyTicker />. Actualmente lidero como{" "}
                 <strong className="text-content">Tech Lead</strong> un equipo de seis
-                desarrolladores frontend.
+                desarrolladores.
               </p>
               <p>
                 Esa experiencia se traduce en lo que de verdad te importa:
@@ -43,10 +43,10 @@ export default function About() {
           </AnimateOnScroll>
 
           {/* Animated counters */}
-          <dl className="mt-10 grid grid-cols-3 gap-6">
+          <dl className="mx-auto mt-10 grid max-w-md grid-cols-2 gap-6">
             {STATS.map((stat, i) => (
               <AnimateOnScroll key={stat.label} delay={i * 100}>
-                <div>
+                <div className="text-center">
                   <dt className="sr-only">{stat.label}</dt>
                   <dd className="font-display text-4xl font-bold text-accent sm:text-5xl">
                     <Counter

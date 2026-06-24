@@ -1,16 +1,14 @@
-import type { ComponentType } from "react";
 import {
   TerminalIcon,
   RefreshCwIcon,
   CartIcon,
 } from "@/components/icons/animated";
+import type { AnimatedIcon } from "@/components/icons/animated";
 import AnimateOnScroll from "@/components/animation/AnimateOnScroll";
-
-/** Animated icon component (lucide-animated): animates on hover by default. */
-type ServiceIcon = ComponentType<{ size?: number; className?: string }>;
+import ServiceCard from "@/components/sections/ServiceCard";
 
 type Service = {
-  icon: ServiceIcon;
+  icon: AnimatedIcon;
   title: string;
   description: string;
 };
@@ -51,24 +49,15 @@ export default function ServicesSection() {
         </AnimateOnScroll>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {SERVICES.map((service, i) => {
-            const Icon = service.icon;
-            return (
-              <AnimateOnScroll key={service.title} delay={i * 50}>
-                <div className="group flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent dark:bg-surface-secondary">
-                    <Icon size={24} className="text-accent" />
-                  </span>
-                  <h3 className="mt-5 font-display text-h3 font-semibold text-content">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 flex-1 text-content-muted">
-                    {service.description}
-                  </p>
-                </div>
-              </AnimateOnScroll>
-            );
-          })}
+          {SERVICES.map((service, i) => (
+            <AnimateOnScroll key={service.title} delay={i * 50}>
+              <ServiceCard
+                icon={service.icon}
+                title={service.title}
+                description={service.description}
+              />
+            </AnimateOnScroll>
+          ))}
         </div>
       </div>
     </section>

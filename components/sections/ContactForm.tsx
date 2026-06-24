@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { SendIcon } from "lucide-animated";
+import useIconHover from "@/components/icons/useIconHover";
 import { SITE } from "@/lib/data/site";
 
 type Errors = {
@@ -26,6 +27,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export default function ContactForm({ onAccent = false }: { onAccent?: boolean }) {
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
+  const sendIcon = useIconHover();
 
   const labelClass = onAccent ? "text-white/90" : "text-content";
   const fieldClass = onAccent
@@ -138,12 +140,18 @@ export default function ContactForm({ onAccent = false }: { onAccent?: boolean }
         )}
       </div>
 
-      <button type="submit" className={buttonClass} disabled={status === "submitting"}>
+      <button
+        type="submit"
+        className={buttonClass}
+        disabled={status === "submitting"}
+        onMouseEnter={sendIcon.onMouseEnter}
+        onMouseLeave={sendIcon.onMouseLeave}
+      >
         {status === "submitting" ? (
           "Enviando…"
         ) : (
           <>
-            <SendIcon size={18} />
+            <SendIcon ref={sendIcon.ref} size={18} animateOnHover={false} />
             Enviar mensaje
           </>
         )}
